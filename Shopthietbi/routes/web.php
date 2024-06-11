@@ -29,6 +29,8 @@ Route::get('/choose-address/{address_id}', 'CustomerController@choose_address');
 Route::post('/update-address/{address_id}', 'CustomerController@update_address');
 Route::get('/history-order', 'CustomerController@history_order');
 Route::get('/cancel-order/{order_id}', 'CustomerController@cancel_order');
+Route::get('/checked-order/{order_id}', 'CustomerController@checked_order');
+
 Route::get('/order-detail/{order_id}', 'CustomerController@order_detail');
 Route::post('/add-wishlist', 'CustomerController@add_wishlist');
 Route::get('/show-wishlist', 'CustomerController@show_wishlist');

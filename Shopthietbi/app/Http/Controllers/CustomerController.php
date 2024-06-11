@@ -250,6 +250,13 @@ class CustomerController extends Controller
         Session::put('message','Huỷ thành công');
         return Redirect()->back();
     }
+    public function checked_order($order_id){
+       
+        DB::table('tbl_order')->where('order_id', $order_id)->update(['order_status' => 'Đã nhận hàng']);
+
+        Session::put('message','Xác nhận thành công');
+        return Redirect()->back();
+    }
     public function order_detail($order_id){
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status','1') -> orderBy('category_slug','desc') -> get();

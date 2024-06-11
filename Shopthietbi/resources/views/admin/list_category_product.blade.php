@@ -22,7 +22,6 @@
                                 ?>
                                 <thead>
                                     <tr>
-                                        <th>Thumb</th>
                                         <th>Tên</th>
                                         <th>Bậc danh mục</th>
                                         <th>Đường dẫn</th>
@@ -35,10 +34,8 @@
                                 <tbody>
                                     @foreach ($all_category_product as $key => $category)
                                         <tr>
-                                            <td><img class="cat-thumb" src="assets/img/category/clothes.png"
-                                                    alt="Product Image" /></td>
+                                            
                                             <td> {{ $category->category_name }}</td>
-
 
                                             <td>
                                                 @if ($category->category_parent == 0)

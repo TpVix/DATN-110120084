@@ -56,7 +56,7 @@
                                 <div class="col-lg-8">
                                     <div class="ec-vendor-upload-detail">
                                         <div class="row g-3">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mb-25">
                                                 <label for="inputEmail4" class="form-label">Tên sản phẩm</label>
                                                 <input data-validation="required" class="form-control slug-title"
                                                     data-validation-error-msg="Tên sản phẩm không được để trống"
@@ -64,7 +64,7 @@
                                                     placeholder="Tên sản phẩm">
 
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mb-25">
                                                 <label class="form-label">Số lượng</label>
                                                 <input type="text" data-validation="number"
                                                     data-validation-error-msg="Số lượng phải là số và không được để trống"
@@ -72,7 +72,7 @@
                                                     placeholder="Số lượng sản phẩm">
 
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mb-25">
                                                 <label class="form-label">Danh mục</label>
 
                                                 <select name="category_id" class="form-select">
@@ -82,21 +82,21 @@
                                                         @if ($cate->category_parent == 0)
                                                             <option value="{{ $cate->category_id }}">
                                                                 {{ $cate->category_name }}</option>
-                                                        @else
-                                                            @foreach ($category as $cate_parent)
-                                                                @if ($cate_parent->category_id == $cate->category_parent)
-                                                                    <option value="{{ $cate->category_id }}">
-                                                                        --{{ $cate->category_name }}</option>
-                                                                @endif
-                                                            @endforeach
+                                                           
                                                         @endif
+                                                        @foreach ($category as $cate_parent)
+                                                        @if ($cate_parent->category_parent == $cate->category_id)
+                                                            <option value="{{ $cate_parent->category_id }}">
+                                                                --{{ $cate_parent->category_name }}</option>
+                                                        @endif
+                                                    @endforeach
                                                     @endforeach
 
 
                                                 </select>
 
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mb-25">
                                                 <label class="form-label">Thương hiệu</label>
 
                                                 <select name="brand_id" class="form-select">
@@ -108,7 +108,7 @@
                                                 </select>
 
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-12 mb-25">
                                                 <label for="slug" class="col-12 col-form-label">Đường dẫn</label>
                                                 <div class="col-12">
                                                     <input data-validation="required"
@@ -121,11 +121,8 @@
                                             </div>
 
 
-                                            <div class="col-md-8 mb-25">
-
-
-                                            </div>
-                                            <div class="col-md-6">
+                                            
+                                            <div class="col-md-6 mb-25">
                                                 <label class="form-label">Giá </label>
 
                                                 <input type="text" data-validation="number"
@@ -134,29 +131,13 @@
                                                     placeholder="Giá sản phẩm">
 
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Giá khuyến mãi</label>
-
-                                                <input type="text" data-validation="number"
-                                                    data-validation-error-msg="Giá khuyến mãi phải là số và không được để trống"
-                                                    name="product_sale_price" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="Giá khuyến mãi sản phẩm">
-
-                                            </div>
-
-                                            <div class="col-md-12">
+                                           
+                                            <div class="col-md-12 mb-25">
                                                 <label class="form-label">Mô tả</label>
                                                 <textarea class="form-control" rows="4" name="product_desc" id="editor1" placeholder="Mô tả"></textarea>
 
                                             </div>
-                                            <div class="col-md-12">
-                                                <label for="exampleInputEmail1">Khuyến mãi</label>
-                                                <select name="product_status" class="form-control input-sm m-bot15">
-                                                    <option value="1">Có</option>
-                                                    <option value="0">Không</option>
-                                            </div>
-                                            </select>
-
+                                           
 
                                             <div class="col-md-12" style="margin-top: 20px;">
                                                 <button type="submit" class="btn btn-primary">Thêm</button>

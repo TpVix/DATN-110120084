@@ -103,12 +103,17 @@
 						</tfoot>
 														
 					</table>
-                    @if ($history_order -> order_status=='Đã huỷ' || $history_order -> order_status=='Đã giao hàng' ||$history_order -> order_status=='Đặt thành công, Đang giao hàng')
+                    @if ($history_order -> order_status=='Đã huỷ' || $history_order -> order_status=='Đã nhận hàng' ||$history_order -> order_status=='Đặt thành công, Đang giao hàng')
                                 
                     @else
-					<div class="checkout-methods">
-						<a onclick="return confirm('Bạn có chắc muốn huỷ đơn hàng ?')" href="{{URL::to('/cancel-order/'.$history_order -> order_id)}}"class="btn btn-block btn-dark"><i class="fa fa-times"></i> Huỷ đơn</a>
+					<div class="checkout-methods d-flex">
+                    <div class="col-lg-6">
+                        <a onclick="return confirm('Bạn có chắc muốn xác nhận đã nhận hàng, sau khi xác nhận không thể hoàn tác !')" href="{{URL::to('/checked-order/'.$history_order -> order_id)}}"class="btn btn-block btn-primary col-lg-12"><i class="fa fa-check"></i> Đã nhận</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a onclick="return confirm('Bạn có chắc muốn huỷ đơn hàng ?')" href="{{URL::to('/cancel-order/'.$history_order -> order_id)}}"class="btn btn-block btn-danger col-lg-12"><i class="fa fa-times "></i> Huỷ đơn</a>
 					</div>
+                    </div>
                     @endif
                 </div><!-- End .cart-summary -->
 			</div>

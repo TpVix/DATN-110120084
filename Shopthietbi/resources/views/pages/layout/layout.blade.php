@@ -302,12 +302,25 @@
                             <li>
                                 <a href="#">Danh mục</a>
                                 <ul>
-                                    @foreach ($category as $key => $category)
-                                        <li><a
-                                                href="{{ URL::to('/danh-muc/' . $category->category_slug) }}">{{ $category->category_name }}</a>
-                                        </li>
+									@foreach ($category as $key => $category1)
+                            
+									<li>
+                                        @if ($category1->category_parent == 0)
+                                            <a href="{{URL::to('/danh-muc/'.$category1-> category_slug)}}">{{($category1 -> category_name)}}</a> 
+                                        @endif
+                                        
+                                        <ul>
+                                            @foreach ($category as $category2)
+                                                @if ($category2->category_parent == $category1->category_id)
+                                                    <li>
+                                                        <a href="{{URL::to('/danh-muc/'.$category2-> category_slug)}}">{{($category2 -> category_name)}}</a> 
+                                                    </li>
+                                                @else 
+                                                @endif
+                                            @endforeach
+                                        </ul> 
+                                    </li>
                                     @endforeach
-
                                 </ul>
                             </li>
                             <li>
@@ -321,47 +334,7 @@
 
                                 </ul>
                             </li>
-                            <li>
-                                <a href="#">Pages</a>
-                                <ul>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                    <li><a href="cart.html">Shopping Cart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                    <li><a href="dashboard.html">Dashboard</a></li>
-
-                                    <ul>
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="single.html">Blog Post</a></li>
-                                    </ul>
-                            </li>
                             <li><a href="contact.html">Contact Us</a></li>
-                            <li><a href="login.html">Đăng nhập</a></li>
-                            <li><a href="forgot-password.html">Forgot Password</a></li>
-                        </ul>
-                        </li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li>
-                            <a href="#">Elements</a>
-                            <ul class="custom-scrollbar">
-                                <li><a href="element-accordions.html">Accordion</a></li>
-                                <li><a href="element-alerts.html">Alerts</a></li>
-                                <li><a href="element-animations.html">Animations</a></li>
-                                <li><a href="element-banners.html">Banners</a></li>
-                                <li><a href="element-buttons.html">Buttons</a></li>
-                                <li><a href="element-call-to-action.html">Call to Action</a></li>
-                                <li><a href="element-countdown.html">Count Down</a></li>
-                                <li><a href="element-counters.html">Counters</a></li>
-                                <li><a href="element-headings.html">Headings</a></li>
-                                <li><a href="element-icons.html">Icons</a></li>
-                                <li><a href="element-info-box.html">Info box</a></li>
-                                <li><a href="element-posts.html">Posts</a></li>
-                                <li><a href="element-products.html">Products</a></li>
-                                <li><a href="element-product-categories.html">Product Categories</a></li>
-                                <li><a href="element-tabs.html">Tabs</a></li>
-                                <li><a href="element-testimonial.html">Testimonials</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="contact.html">Contact Us</a></li>
                         </ul>
                     </nav>
                 </div>

@@ -35,7 +35,6 @@
                
                   <th>Tên danh mục</th>
                   <th>Tên thương hiệu</th>
-                  <th>Khuyến mãi</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
@@ -50,22 +49,14 @@
             
               <td>{{ $product -> category_name}}</td>
               <td>{{ $product -> brand_name}}</td>
-              <td>
-                <?php
-                if ($product->product_status == 0) {
-                    echo '<a class="badge badge-danger" href="' . URL::to('/active-product/' . $product->product_id) . '">Không</a>';
-                } else {
-                    echo '<a class="badge badge-success" href="' . URL::to('/unactive-product/' . $product->product_id) . '">Có</a>';
-                }
-                ?>
-
-              </td>
-
-              <td
+             
+              <td style="text-align: center;">
+              <div
               style="
+                  height: 100%;
                   display: flex;
                   align-items: center;
-                  flex-wrap: wrap;
+                  
                   justify-content: center;
               "
               >
@@ -74,7 +65,8 @@
                 </a>
                 <a onclick="return confirm('Bạn có chắc muốn xoá ?')" href="{{URL::to('/delete-product/'.$product->product_id)}}" class="btn btn-outline-danger" ui-toggle-class="">
                   Xoá  <i class="fa fa-times text-danger text"></i>
-                </a><br>
+                </a>
+              </div>
                 <a href="{{URL::to('/add-image/'.$product->product_id)}}" class="btn btn-outline-success mt-1" ui-toggle-class="">
                   Thêm ảnh <i class="fa fa-pencil-square-o text-success text-active"></i>
                </a>

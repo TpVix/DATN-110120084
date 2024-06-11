@@ -86,33 +86,13 @@ class CartController extends Controller
     public function add_cart(Request $request)
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        if ($cart_detail->isEmpty()) {
-            $data_cart_detail = array();
-            $data_cart_detail['customer_id'] = Session::get('customer_id'); 
-            $data_cart_detail['product_id'] = $request->cart_product_id;
-            $data_cart_detail['product_image'] = $request->cart_product_image;
-            $data_cart_detail['product_name'] = $request->cart_product_name;
-            $data_cart_detail['product_price'] = $request->cart_product_price;
-            $data_cart_detail['product_quantity'] = $request->cart_product_qty;
-            DB::table('tbl_cart_detail')->insert($data_cart_detail);
-        } else {
-            $product_exist = false;
-            foreach ($cart_detail as $key => $v_cart_detail) {
-                if ($v_cart_detail->product_id == $request->cart_product_id) {
-                    $data_cart_detail = array();
-                    $data_cart_detail['customer_id'] = Session::get('customer_id'); 
-                    $data_cart_detail['product_id'] = $request->cart_product_id;
-                    $data_cart_detail['product_image'] = $request->cart_product_image;
-                    $data_cart_detail['product_name'] = $request->cart_product_name;
-                    $data_cart_detail['product_price'] = $request->cart_product_price;
-                    $data_cart_detail['product_quantity'] = $v_cart_detail->product_quantity + $request->cart_product_qty;
-                    DB::table('tbl_cart_detail')->where('cart_detail_id', $v_cart_detail->cart_detail_id)->update($data_cart_detail);
-                    $product_exist = true;
-                    break; // Exit the loop if product is found
-                }
-            }
-            // If product does not exist in cart, add it
-            if (!$product_exist) {
+        $check = DB::table('tbl_product')->where('product_id', $request->cart_product_id)->first();
+        if ($request->cart_product_qty>$check->product_quantity) {
+            Session::put('sl_qua_lon','Số lượng không phù hợp');
+            return Redirect()->back();
+        }else{
+
+            if ($cart_detail->isEmpty()) {
                 $data_cart_detail = array();
                 $data_cart_detail['customer_id'] = Session::get('customer_id'); 
                 $data_cart_detail['product_id'] = $request->cart_product_id;
@@ -121,9 +101,36 @@ class CartController extends Controller
                 $data_cart_detail['product_price'] = $request->cart_product_price;
                 $data_cart_detail['product_quantity'] = $request->cart_product_qty;
                 DB::table('tbl_cart_detail')->insert($data_cart_detail);
+            } else {
+                $product_exist = false;
+                foreach ($cart_detail as $key => $v_cart_detail) {
+                    if ($v_cart_detail->product_id == $request->cart_product_id) {
+                        $data_cart_detail = array();
+                        $data_cart_detail['customer_id'] = Session::get('customer_id'); 
+                        $data_cart_detail['product_id'] = $request->cart_product_id;
+                        $data_cart_detail['product_image'] = $request->cart_product_image;
+                        $data_cart_detail['product_name'] = $request->cart_product_name;
+                        $data_cart_detail['product_price'] = $request->cart_product_price;
+                        $data_cart_detail['product_quantity'] = $v_cart_detail->product_quantity + $request->cart_product_qty;
+                        DB::table('tbl_cart_detail')->where('cart_detail_id', $v_cart_detail->cart_detail_id)->update($data_cart_detail);
+                        $product_exist = true;
+                        break; // Exit the loop if product is found
+                    }
+                }
+                // If product does not exist in cart, add it
+                if (!$product_exist) {
+                    $data_cart_detail = array();
+                    $data_cart_detail['customer_id'] = Session::get('customer_id'); 
+                    $data_cart_detail['product_id'] = $request->cart_product_id;
+                    $data_cart_detail['product_image'] = $request->cart_product_image;
+                    $data_cart_detail['product_name'] = $request->cart_product_name;
+                    $data_cart_detail['product_price'] = $request->cart_product_price;
+                    $data_cart_detail['product_quantity'] = $request->cart_product_qty;
+                    DB::table('tbl_cart_detail')->insert($data_cart_detail);
+                }
             }
+            return Redirect()->back();
         }
-        return Redirect()->back();
     }
 
 

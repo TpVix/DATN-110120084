@@ -19,7 +19,7 @@ class HomeController extends Controller
     {
         $seven_days_ago = Carbon::now()->subDays(7);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $new_product = DB::table('tbl_product')
             ->whereBetween('created_at', [$seven_days_ago, Carbon::now()])
@@ -114,7 +114,9 @@ class HomeController extends Controller
         Session::put('max_price', $max_price);
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        
+
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
 
         $category_name = Category::where('tbl_category_product.category_slug', $category_slug)
@@ -145,6 +147,7 @@ class HomeController extends Controller
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                
                 ->with('cart_detail', $cart_detail)
                 ->with('brand', $brand)
                 ->with('category_name', $category_name)
@@ -158,6 +161,8 @@ class HomeController extends Controller
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                
+
                 ->with('cart_detail', $cart_detail)
                 ->with('brand', $brand)
                 ->with('category_name', $category_name)
@@ -171,6 +176,8 @@ class HomeController extends Controller
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                
+
                 ->with('cart_detail', $cart_detail)
                 ->with('brand', $brand)
                 ->with('category_name', $category_name)
@@ -188,8 +195,9 @@ class HomeController extends Controller
         Session::put('min_price', $min_price);
         Session::put('max_price', $max_price);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
+        
 
         $brand_name = Brand::where('tbl_brand.brand_slug', $brand_slug)
             ->limit(1)->get();
@@ -252,7 +260,7 @@ class HomeController extends Controller
     public function product_detail(Request $request, $product_slug)
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
         $product_detail = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
@@ -366,7 +374,7 @@ class HomeController extends Controller
     public function my_account($customer_id)
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $customer = Customer::where('customer_id', $customer_id)->first();
         return view('pages.customer.my_account')
@@ -400,7 +408,7 @@ class HomeController extends Controller
     {
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $address = DB::table('tbl_address')
             ->join('tbl_tinhthanhpho', 'tbl_tinhthanhpho.matp', '=', 'tbl_address.matp')
@@ -424,7 +432,7 @@ class HomeController extends Controller
         Session::put('min_price', $min_price);
         Session::put('max_price', $max_price);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
 
         $filter_price = DB::table('tbl_product')
@@ -447,7 +455,9 @@ class HomeController extends Controller
         Session::put('high_to_low_cat', null);
         $searched = $request->searched;
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
-        $category = Category::where('category_status', '1')->where('category_parent','0')->orderBy('category_slug', 'desc')->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        
+
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         Session::put('searched', $searched);
 

@@ -45,7 +45,6 @@ class ProductController extends Controller
         $data['product_price'] = $request -> product_price;
         $data['product_quantity'] = $request -> product_quantity;
         $data['product_desc'] = $request -> product_desc;
-        $data['product_status'] = $request -> product_status;
         $data['category_id'] = $request -> category_id;
         $data['brand_id'] = $request -> brand_id;
 
@@ -67,16 +66,6 @@ class ProductController extends Controller
             return Redirect::to('/add-product');
         }
        
-    }
-    public function active_product($product_id){
-        $this -> AuthLogin();
-        DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status' => 1]);
-        return Redirect::to('/list-product');
-    }
-    public function unactive_product($product_id){
-        $this -> AuthLogin();
-        DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status' => 0]);
-        return Redirect::to('/list-product');
     }
 
     public function edit_product($product_id){

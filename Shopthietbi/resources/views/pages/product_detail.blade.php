@@ -156,6 +156,13 @@
                             </ul>
 
                             <div class="product-action">
+                                <?php
+                                $sl_qua_lon = Session::get('sl_qua_lon');
+                                    if ($sl_qua_lon) {
+                                        echo "<div class='alert alert-danger'>$sl_qua_lon</div>";
+                                        Session::put('sl_qua_lon', null);
+                                    }
+                                ?>
                                 <label style="opacity: 0.5;">Còn lại: {{ $detail->product_quantity }}</label><br>
                                 <form action="{{ URL::to('/add-cart') }}" method="post">
                                     @csrf
@@ -199,16 +206,15 @@
                                             value="{{ $detail->product_price }}"
                                             class="cart_product_price_{{ $detail->product_id }}">
                                     @endif
-                                    <input type="hidden" name="cart_product_qty" value="1" class="">
                                     <?php
                                     $customer_id = Session::get('customer_id');
                                     ?>
                                     @if ($customer_id == null)
                                         <a href="{{ URL::to('/login-register') }}"
-                                            class="btn btn-dark add-cart mr-2">ĐĂNG NHẬP ĐỂ ĐẶT HÀNG</a>
+                                            class="btn btn-dark mr-2">ĐĂNG NHẬP ĐỂ ĐẶT HÀNG</a>
                                     @else
                                         <button type="submit" href="#"
-                                            class="btn btn-dark add-cart mr-2"><span>THÊM VÀO GIỎ HÀNG</span></button>
+                                            class="btn btn-dark mr-2"><span><i class="fa-solid fa-cart-shopping"></i> THÊM VÀO GIỎ HÀNG</span></button>
                                     @endif
 
                                 </form>
@@ -308,6 +314,8 @@
 
                                 <div class="fb-comments" data-href="{{ $url }}" data-width="100%"
                                     data-numposts="10"></div>
+                                   
+
                             </div>
                             <!-- End .row -->
                         </div>

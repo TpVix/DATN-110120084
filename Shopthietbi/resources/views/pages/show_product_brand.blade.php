@@ -295,21 +295,26 @@
                             <div class="widget-body">
                                 <ul class="cat-list">
                                     @foreach ($category as $key => $category1)
-                                    <li>
-                                        <a href="{{URL::to('/danh-muc/'.$category1-> category_slug)}}"  role="button" aria-expanded="true" aria-controls="widget-category-1">
-                                            {{($category1 -> category_name)}}
-                                            {{-- <span class="products-count">(3)</span> --}}
-                                            {{-- <span class="toggle"></span> --}}
-                                        </a>
-                                        {{-- <div class="collapse show" id="widget-category-1">
-                                            <ul class="cat-sublist">
-                                                <li>Caps<span class="products-count">(1)</span></li>
-                                                <li>Watches<span class="products-count">(2)</span></li>
-                                            </ul>
-                                        </div> --}}
-                                    </li>
+                                        @if ($category1->category_parent == 0)
+                                            <li>
+                                                <a href="{{ URL::to('/danh-muc/'.$category1->category_slug) }}" id="category_parent_{{$category1->category_id}}" role="button" aria-expanded="false" aria-controls="widget-category-{{$category1->category_id}}">
+                                                    {{ $category1->category_name }}
+                                                    <span class="toggle"></span>
+                                                </a>
+                                                <div class="collapse" id="widget-category-{{$category1->category_id}}">
+                                                    <ul class="cat-sublist">
+                                                        @foreach ($category as $category2)
+                                                            @if ($category2->category_parent == $category1->category_id)
+                                                                <li>
+                                                                    <a href="{{ url('/danh-muc/'.$category2->category_slug) }}" class="products-count">{{ $category2->category_name }}</a>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        @endif
                                     @endforeach
-                                    
                                 </ul>
                             </div>
                             <!-- End .widget-body -->

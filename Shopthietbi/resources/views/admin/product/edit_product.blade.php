@@ -138,11 +138,7 @@
                                             <input type="text" data-validation="number" data-validation-error-msg="Giá phải là số và không được để trống" value="{{($edit_product -> product_price)}}" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Giá sản phẩm">
 
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Giá khuyến mãi</label>                                    
-                                            <input type="text" data-validation="number" data-validation-error-msg="Giá khuyến mãi phải là số và không được để trống" value="{{($edit_product -> product_sale_price)}}" name="product_sale_price" class="form-control" id="exampleInputEmail1" placeholder="Giá khuyến mãi sản phẩm">
-
-                                        </div>
+                                       
                                 
                                         <div class="col-md-12">
                                             <label class="form-label">Mô tả</label>

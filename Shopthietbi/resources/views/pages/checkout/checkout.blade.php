@@ -85,7 +85,7 @@
 
                                     <div class="form-group">
                                         <label class="order-comments">Ghi chú</label>
-                                        <textarea class="form-control shipping_note" name="shipping_note" placeholder="Ghi chú cụ thể" required></textarea>
+                                        <textarea class="form-control shipping_note" name="shipping_note" placeholder="Ghi chú cụ thể"></textarea>
                                     </div>
                                 @endforeach
 

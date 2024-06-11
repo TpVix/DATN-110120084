@@ -22,7 +22,6 @@
                         ?>
                   <thead>
                       <tr>
-                          <th>Thumb</th>
                           <th>Tên</th>
                           
                           <th>Đường dẫn</th>
@@ -38,7 +37,6 @@
 
 
                       <tr>
-                          <td><img class="cat-thumb" src="assets/img/category/clothes.png" alt="Product Image" /></td>
                           <td> {{ $brand -> brand_name}}</td>
 
                           

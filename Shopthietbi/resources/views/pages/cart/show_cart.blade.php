@@ -66,7 +66,7 @@
 							
 											
 										<a href="{{URL::to('/san-pham/'.$product_slug)}}" class="product-image">
-											<img style="width: 100%;height: 151px;" src="{{asset('public/upload/'.$cart-> product_image)}}" alt="product">
+											<img style="width: 100%;height: 100%;" src="{{asset('public/upload/'.$cart-> product_image)}}" alt="product">
 										</a>
 						
 										<a href="{{URL::to('/delete-cart/'.$cart-> product_id)}}" class="btn-remove icon-cancel" title="Remove Product"></a>
