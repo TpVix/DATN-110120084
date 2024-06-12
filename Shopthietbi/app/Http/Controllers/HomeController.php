@@ -140,7 +140,7 @@ class HomeController extends Controller
 
         if (Session::get('low_to_high_cat') != null) {
             $query = DB::table('tbl_product')
-                ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
+                ->leftjoin('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
                 ->where('tbl_category_product.category_slug', $category_slug);
             $product_by_category = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(2);
 
@@ -154,7 +154,7 @@ class HomeController extends Controller
                 ->with('product_by_category', $product_by_category);
         } elseif (Session::get('high_to_low_cat') != null) {
             $query = DB::table('tbl_product')
-                ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
+                ->leftjoin('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
                 ->where('tbl_category_product.category_slug', $category_slug);
             $product_by_category = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(2);
 
@@ -169,7 +169,7 @@ class HomeController extends Controller
                 ->with('product_by_category', $product_by_category);
         } else {
             $query = DB::table('tbl_product')
-                ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
+                ->leftjoin('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
                 ->where('tbl_category_product.category_slug', $category_slug);
             $product_by_category = $query->paginate(2);
 
@@ -263,7 +263,7 @@ class HomeController extends Controller
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
         $product_detail = DB::table('tbl_product')
-            ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            ->leftjoin('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->join('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_product.product_slug', $product_slug)->get();
         $total_start = 0;
@@ -302,7 +302,7 @@ class HomeController extends Controller
         }
 
         $related_product = DB::table('tbl_product')
-            ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            ->leftjoin('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->join('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.product_slug', [$product_slug])->get();
         $detail = DB::table('tbl_product')->where('product_slug', $product_slug)->first();

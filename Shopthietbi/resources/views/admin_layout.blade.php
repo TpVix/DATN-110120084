@@ -137,6 +137,12 @@
 								</ul>
 							</div>
 						</li>
+						<li>
+							<a class="sidenav-item-link" href="{{url('/add-accessory')}}">
+								<i class="mdi mdi-tag-minus"></i>
+								<span class="nav-text">Nhóm phụ kiện</span>
+							</a>
+						</li>
                         <!-- Brands -->
 						<li class="has-sub">
 							<a class="sidenav-item-link" href="javascript:void(0)">
@@ -302,7 +308,7 @@
                                                 echo $name;
                                                 
                                             }
-                                            ?> <small class="pt-1">john.example@gmail.com</small>
+                                            ?>
 										</div>
 									</li>
 									<li>
@@ -960,6 +966,26 @@
             });
 			
         });
+
+		document.addEventListener('DOMContentLoaded', function() {
+            const productRadio = document.getElementById('product_radio');
+            const accessoryRadio = document.getElementById('accessory_radio');
+            const categoryDiv = document.getElementById('category_div');
+           
+			productRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    categoryDiv.hidden= false;
+                }
+            });
+
+            accessoryRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    categoryDiv.hidden = true;
+                }
+            });
+
+			
+        });
         </script>
 
 	<script>
@@ -978,15 +1004,12 @@
 	
 		document.addEventListener('DOMContentLoaded', (event) => {
 			const cateInput = document.querySelector('input[name="category_product_name"]');
-			const brandInput = document.querySelector('input[name="brand_product_name"]');
 			const slugInput = document.querySelector('input[name="category_product_slug"]');
-			
+
 			cateInput.addEventListener('input', function () {
 				slugInput.value = generateSlug(this.value);
 			});
-			brandInput.addEventListener('input', function () {
-				slugInput.value = generateSlug(this.value);
-			});
+		
 		});
 		document.addEventListener('DOMContentLoaded', (event) => {
 			const brandInput = document.querySelector('input[name="brand_product_name"]');
@@ -994,6 +1017,14 @@
 			
 			brandInput.addEventListener('input', function () {
 				slugInput.value = generateSlug(this.value);
+			});
+		});
+		document.addEventListener('DOMContentLoaded', (event) => {
+			const accessoryInput = document.querySelector('input[name="accessory_name"]');
+			const slugaccessory = document.querySelector('input[name="accessory_slug"]');
+			
+			accessoryInput.addEventListener('input', function () {
+				slugaccessory.value = generateSlug(this.value);
 			});
 		});
 		document.addEventListener('DOMContentLoaded', (event) => {

@@ -152,6 +152,16 @@ Route::post('/save-promotion', 'PromotionController@save_promotion');
 Route::get('/edit-promotion/{promotion_id}', 'PromotionController@edit_promotion');
 Route::post('/update-promotion/{promotion_id}', 'PromotionController@update_promotion');
 Route::get('/delete-promotion/{promotion_id}', 'PromotionController@delete_promotion');
+//accessory
+Route::get('/add-accessory', 'AccessoryController@add_accessory');
+Route::get('/product-accessory/{accessory_id}', 'AccessoryController@product_accessory');
+Route::get('/chose-product-accessory/{product_id}', 'AccessoryController@chose_product_accessory');
+Route::get('/delete-product-accessory/{product_id}', 'AccessoryController@delete_product_accessory');
+
+Route::post('/save-accessory', 'AccessoryController@save_accessory');
+Route::get('/edit-accessory/{accessory_id}', 'AccessoryController@edit_accessory');
+Route::post('/update-accessory/{accessory_id}', 'AccessoryController@update_accessory');
+Route::get('/delete-accessory/{accessory_id}', 'AccessoryController@delete_accessory');
 //Manage Orer
 Route::group(['middleware' => ['auth:admin', 'checkAdminRole:Quản trị viên,Quản lý']], function () {
     Route::get('/print-order/{checkout_code}', 'OrderController@print_order');

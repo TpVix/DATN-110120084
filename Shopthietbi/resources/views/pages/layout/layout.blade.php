@@ -305,20 +305,11 @@
 									@foreach ($category as $key => $category1)
                             
 									<li>
-                                        @if ($category1->category_parent == 0)
+                                      
                                             <a href="{{URL::to('/danh-muc/'.$category1-> category_slug)}}">{{($category1 -> category_name)}}</a> 
-                                        @endif
+                                       
                                         
-                                        <ul>
-                                            @foreach ($category as $category2)
-                                                @if ($category2->category_parent == $category1->category_id)
-                                                    <li>
-                                                        <a href="{{URL::to('/danh-muc/'.$category2-> category_slug)}}">{{($category2 -> category_name)}}</a> 
-                                                    </li>
-                                                @else 
-                                                @endif
-                                            @endforeach
-                                        </ul> 
+                                        
                                     </li>
                                     @endforeach
                                 </ul>

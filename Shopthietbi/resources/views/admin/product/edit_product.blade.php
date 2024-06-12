@@ -92,6 +92,8 @@
                                         <label class="form-label">Danh mục</label>
                                         
                                         <select name="category_id" class="form-select">
+                                            <option value="0">
+                                                --Chọn danh mục--</option>
                                             @foreach ($category as $cate)
                                         @if ($cate->category_id == $edit_product->category_id)
                                             <option value="{{ $cate->category_id }}" selected>{{ $cate->category_name }}</option>
