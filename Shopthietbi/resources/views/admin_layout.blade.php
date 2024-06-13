@@ -60,37 +60,9 @@
 							<hr>
 						</li>
 
-						<!-- Vendors -->
-						<li class="has-sub">
-							<a class="sidenav-item-link" href="javascript:void(0)">
-								<i class="mdi mdi-account-group-outline"></i>
-								<span class="nav-text">Vendors</span> <b class="caret"></b>
-							</a>
-							<div class="collapse">
-								<ul class="sub-menu" id="vendors" data-parent="#sidebar-menu">
-									<li class="">
-										<a class="sidenav-item-link" href="vendor-card.html">
-											<span class="nav-text">Vendor Grid</span>
-										</a>
-									</li>
-
-									<li class="">
-										<a class="sidenav-item-link" href="vendor-list.html">
-											<span class="nav-text">Vendor List</span>
-										</a>
-									</li>
-									<li class="">
-										<a class="sidenav-item-link" href="vendor-profile.html">
-											<span class="nav-text">Vendors Profile</span>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-
 						<!-- Users -->
 						
-							<li class="has-sub">
+							<li class="has-sub active">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="mdi mdi-account-group"></i>
 									<span class="nav-text">Tài khoản</span> <b class="caret"></b>
@@ -117,7 +89,7 @@
 						
 
 						<!-- Category -->
-						<li class="has-sub">
+						<li class="has-sub active">
 							<a class="sidenav-item-link" href="javascript:void(0)">
 								<i class="mdi mdi-dns-outline"></i>
 								<span class="nav-text">Danh mục</span> <b class="caret"></b>
@@ -137,14 +109,14 @@
 								</ul>
 							</div>
 						</li>
-						<li>
+						<li class="active">
 							<a class="sidenav-item-link" href="{{url('/add-accessory')}}">
 								<i class="mdi mdi-tag-minus"></i>
 								<span class="nav-text">Nhóm phụ kiện</span>
 							</a>
 						</li>
                         <!-- Brands -->
-						<li class="has-sub">
+						<li class="has-sub active">
 							<a class="sidenav-item-link" href="javascript:void(0)">
 								<i class="mdi mdi-tag-faces"></i>
 								<span class="nav-text">Thương hiệu</span><b class="caret"></b>
@@ -165,7 +137,7 @@
 							</div>
 							
 						</li>
-                        <li class="has-sub">
+                        <li class="has-sub active">
 							<a class="sidenav-item-link" href="javascript:void(0)">
 								<i class="mdi mdi-sort-variant"></i>
 								<span class="nav-text">Slider</span><b class="caret"></b>
@@ -187,7 +159,7 @@
 							
 						</li>
 						<!-- Products -->
-						<li class="has-sub">
+						<li class="has-sub active">
 							<a class="sidenav-item-link" href="javascript:void(0)">
 								<i class="mdi mdi-palette-advanced"></i>
 								<span class="nav-text">Sản phẩm</span> <b class="caret"></b>
@@ -219,7 +191,7 @@
 						</li>
 
 						<!-- Orders -->
-						<li class="has-sub">
+						<li class="has-sub active">
 							<a class="sidenav-item-link" href="javascript:void(0)">
 								<i class="mdi mdi-basket"></i>
 								<span class="nav-text">Đơn hàng</span> <b class="caret"></b>
@@ -236,7 +208,7 @@
 							</div>
 						</li>
 						
-						<li class="has-sub">
+						<li class="has-sub active">
 							<a class="sidenav-item-link" href="{{URL::to('/manage-delivery')}}">
 								<i class="mdi mdi-car-estate"></i>
 								<span class="nav-text">Phí vận chuyển</span> 
@@ -244,13 +216,13 @@
 							
 						</li>
 						<!-- Reviews -->
-						<li>
+						<li class="active">
 							<a class="sidenav-item-link" href="{{url('/list-review')}}">
 								<i class="mdi mdi-star-half"></i>
 								<span class="nav-text">Đánh giá</span>
 							</a>
 						</li>
-						<li>
+						<li class="active">
 							<a class="sidenav-item-link" href="{{url('/add-promotion')}}">
 								<i class="mdi mdi-tag-minus"></i>
 								<span class="nav-text">Khuyến mãi</span>

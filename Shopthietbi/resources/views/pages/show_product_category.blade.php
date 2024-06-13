@@ -285,25 +285,15 @@
                             <div class="widget-body">
                                     <ul class="cat-list">
                                         @foreach ($category as $key => $category1)
-                                            @if ($category1->category_parent == 0)
+                                            
                                                 <li>
                                                     <a href="{{ URL::to('/danh-muc/'.$category1->category_slug) }}" id="category_parent_{{$category1->category_id}}" role="button" aria-expanded="false" aria-controls="widget-category-{{$category1->category_id}}">
                                                         {{ $category1->category_name }}
-                                                        <span class="toggle"></span>
+                                                        
                                                     </a>
-                                                    <div class="collapse" id="widget-category-{{$category1->category_id}}">
-                                                        <ul class="cat-sublist">
-                                                            @foreach ($category as $category2)
-                                                                @if ($category2->category_parent == $category1->category_id)
-                                                                    <li>
-                                                                        <a href="{{ url('/danh-muc/'.$category2->category_slug) }}" class="products-count">{{ $category2->category_name }}</a>
-                                                                    </li>
-                                                                @endif
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
+                                                    
                                                 </li>
-                                            @endif
+                                            
                                         @endforeach
                                     </ul>
                             </div>

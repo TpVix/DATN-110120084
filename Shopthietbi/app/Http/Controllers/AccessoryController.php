@@ -90,6 +90,7 @@ class AccessoryController extends Controller
        Session::put('accessory_id',$accessory_id);
         $all_product = DB::table('tbl_product')
         ->leftJoin('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
+        ->leftJoin('tbl_accessory', 'tbl_accessory.accessory_id', '=', 'tbl_product.accessory_id')
         ->where('category_id',0)
         ->orderBy('product_id','desc')->get();
 

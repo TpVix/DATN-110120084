@@ -34,7 +34,7 @@
                                     <img src="{{URL::to('public/upload/'.$filter -> product_image)}}" style="transform: scaleX(-1);width: 280px; height: 280px;" alt="product" />
                                 </a>
 
-                                @if ($filter-> product_status == '1')
+                                {{-- @if ($filter-> product_status == '1')
                                 <div class="label-group">
                                     <div class="product-label label-hot"> 
                                         Giảm: {{ round(100 - (($filter->product_sale_price / $filter->product_price) * 100)) }}%
@@ -42,7 +42,7 @@
                                 </div>
                                 @else
                                 
-                                @endif
+                                @endif --}}
                             </figure>
 
                             <div class="product-details">
@@ -56,27 +56,84 @@
                                 </h3>
 
                                 <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span>
-                                        <!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div>
+                                    <ul style="display: flex;">
+                                        @php
+                                            $count = 0;
+                                            $mean = 0;
+                                            $total_start = 0;
+                                            $rating = DB::table('tbl_comment')
+                                                ->join(
+                                                    'tbl_rating',
+                                                    'tbl_rating.comment_id',
+                                                    '=',
+                                                    'tbl_comment.comment_id',
+                                                )
+                                                ->where('product_id', $filter->product_id)
+                                                ->orderBy('rating_id', 'desc')
+                                                ->get();
+
+                                            foreach ($rating as $key => $v_rating) {
+                                                $count++;
+                                                $total_start += $v_rating->rating_start;
+                                            }
+
+                                            if ($count == 0) {
+                                                $mean = round($total_start);
+                                            } else {
+                                                $mean = round($total_start / $count);
+                                            }
+
+                                        @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @php
+                                                if ($i <= $mean) {
+                                                    $color = 'color:#706f6c;';
+                                                } else {
+                                                    $color = 'color:#ccc;';
+                                                }
+                                            @endphp
+
+
+                                            <li id="" data-index="" data-product_id="" data-rating=""
+                                                class="rating"
+                                                style="cursor: pointer;{{ $color }} font-size: 25px;">
+                                                &#9733;
+                                            </li>
+                                        @endfor
+                                    </ul>
                                     <!-- End .product-ratings -->
                                 </div>
                                 <!-- End .product-container -->
 
-                                @if ($filter-> product_status == '1')
-
-                                <div class="price-box">
-                                    <del class="old-price">{{number_format($filter-> product_price)}}</del>
-                                    <span style="color:red;" class="product-price">{{number_format($filter-> product_sale_price).' '.'VNĐ'}}</span>
-                                </div>
-                                @else
-                                <div class="price-box">
-                                    <span style="color:red;" class="product-price">{{number_format($filter-> product_price).' '.'VNĐ'}}</span>
-                                </div>
-                                @endif
-                                <!-- End .price-box -->
+                                @if ($filter->promotion_id != 0)
+                                            @php
+                                                $active_promotion_new = DB::table('tbl_promotion')
+                                                    ->where('promotion_status', 'Có')
+                                                    ->where('promotion_id', $filter->promotion_id)
+                                                    ->get();
+                                            @endphp
+                                            <div class="price-box">
+                                                <del
+                                                    class="old-price">{{ number_format($filter->product_price) }}</del><br>
+                                                @foreach ($active_promotion_new as $v_active_promotion)
+                                                    @if ($v_active_promotion->promotion_option == '%')
+                                                        <span style="color:red;"
+                                                            class="product-price">{{ number_format(($filter->product_price * (100 - $v_active_promotion->promotion_price)) / 100) . ' ' . 'VNĐ' }}</span>
+                                                    @else
+                                                        <span style="color:red;"
+                                                            class="product-price">{{ number_format($filter->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <div class="price-box">
+                                                <del class="old-price"></del><br>
+                                                <span style="color:red;"
+                                                    class="product-price">{{ number_format($filter->product_price) . ' ' . 'VNĐ' }}</span>
+                                            </div>
+                                        @endif
+                                        <!-- End .price-box -->
+                                        <p style="color:#999;font-size: 1.4rem;">Đã bán: {{ $filter->quantity_sold }}</p>
 
                                 <div class="product-action">
                                            
@@ -88,24 +145,43 @@
                                                  class="cart_product_name_{{$filter-> product_id}}">
                                                  <input type="hidden" name="" value="{{$filter-> product_image}}"
                                                  class="cart_product_image_{{$filter-> product_id}}">
-                                                 @if ($filter-> product_status == '1')
-                                                 <input type="hidden" name="" value="{{$filter-> product_sale_price}}"
-                                                 class="cart_product_price_{{$filter-> product_id}}">
-                                                 @else
-                                                 <input type="hidden" name="" value="{{$filter-> product_price}}"
-                                                 class="cart_product_price_{{$filter-> product_id}}">
-                                                 @endif
-                                                 <input type="hidden" name="" value="1"
-                                                 class="cart_product_qty_{{$filter-> product_id}}">
-                                                 <?php 
-                                                    $customer_id = Session::get('customer_id');
+                                                 @if ($filter->promotion_id != 0)
+                                                    @php
+                                                        $active_promotion_new = DB::table('tbl_promotion')
+                                                            ->where('promotion_status', 'Có')
+                                                            ->where('promotion_id', $filter->promotion_id)
+                                                            ->get();
+                                                    @endphp
+                                                    @foreach ($active_promotion_new as $v_active_promotion)
+                                                        @if ($v_active_promotion->promotion_option == '%')
+                                                            <input type="hidden" name="cart_product_price"
+                                                                value="{{ ($filter->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
+                                                                class="cart_product_price_{{ $filter->product_id }}">
+                                                        @else
+                                                            <input type="hidden" name="cart_product_price"
+                                                                value="{{ $filter->product_price - $v_active_promotion->promotion_price }}"
+                                                                class="cart_product_price_{{ $filter->product_id }}">
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <input type="hidden" name="cart_product_price"
+                                                        value="{{ $filter->product_price }}"
+                                                        class="cart_product_price_{{ $filter->product_id }}">
+                                                @endif
+                                                <input type="hidden" name="cart_product_qty" value="1"
+                                                    class="">
+                                                <?php
+                                                $customer_id = Session::get('customer_id');
                                                 ?>
                                                 @if ($customer_id == null)
-                                                <a href="{{ URL::to('/login-register') }}"
-                                                class="btn-icon btn-add-cart1 product-type-simple">ĐĂNG NHẬP ĐỂ ĐẶT HÀNG</a>
+                                                    <a href="{{ URL::to('/login-register') }}"
+                                                        class="btn-icon btn-add-cart1 product-type-simple">ĐĂNG NHẬP ĐỂ ĐẶT
+                                                        HÀNG</a>
                                                 @else
-                                                <button type="submit" href="#" class="btn-icon btn-add-cart1 product-type-simple"><i
-                                                    class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ HÀNG</span></button>
+                                                    <button type="submit" href="#"
+                                                        class="btn-icon btn-add-cart1 product-type-simple"><i
+                                                            class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ
+                                                            HÀNG</span></button>
                                                 @endif
                                             </form>
                                 </div>
@@ -228,187 +304,9 @@
 
                     <!-- End .widget -->
 
-                    <div class="widget widget-featured">
-                        <h3 class="widget-title">Featured</h3>
+                    
 
-                        <div class="widget-body">
-                            <div class="owl-carousel widget-featured-products">
-                                <div class="featured-col">
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="assets/images/products/small/product-4.jpg" width="75" height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-4-2.jpg" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Blue Backpack for
-                                                    the Young - S</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="assets/images/products/small/product-5.jpg" width="75" height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-5-2.jpg" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Casual Spring Blue
-                                                    Shoes</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="assets/images/products/small/product-6.jpg" width="75" height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-6-2.jpg" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Men Black Gentle
-                                                    Belt</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                </div>
-                                <!-- End .featured-col -->
-
-                                <div class="featured-col">
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="assets/images/products/small/product-1.jpg" width="75" height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-1-2.jpg" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Ultimate 3D
-                                                    Bluetooth Speaker</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="assets/images/products/small/product-2.jpg" width="75" height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-2-2.jpg" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Brown Women Casual
-                                                    HandBag</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="assets/images/products/small/product-3.jpg" width="75" height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-3-2.jpg" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Circled Ultimate
-                                                    3D Speaker</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                </div>
-                                <!-- End .featured-col -->
-                            </div>
-                            <!-- End .widget-featured-slider -->
-                        </div>
-                        <!-- End .widget-body -->
-                    </div>
-                    <!-- End .widget -->
-
-                    <div class="widget widget-block">
-                        <h3 class="widget-title">Custom HTML Block</h3>
-                        <h5>This is a custom sub-title.</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non placerat mi. Etiam non tellus </p>
-                    </div>
-                    <!-- End .widget -->
+                  
                 </div>
                 <!-- End .sidebar-wrapper -->
             </aside>

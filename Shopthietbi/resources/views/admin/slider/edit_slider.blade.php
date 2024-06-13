@@ -6,8 +6,7 @@
     <div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
         <div>
             <h1>Thêm Slider</h1>
-            <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>Slider</p>
+            
         </div>
     </div>
     <div class="row">

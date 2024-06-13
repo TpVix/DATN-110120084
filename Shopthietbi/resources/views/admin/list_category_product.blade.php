@@ -3,9 +3,7 @@
     <div class="content">
         <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
             <h1>Danh sách danh mục</h1>
-            <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>Main Category
-            </p>
+           
         </div>
         <div class="row">
             <div class="col-12">
@@ -23,7 +21,7 @@
                                 <thead>
                                     <tr>
                                         <th>Tên</th>
-                                        <th>Bậc danh mục</th>
+                                       
                                         <th>Đường dẫn</th>
                                         <th>Trạng thái</th>
 
@@ -37,18 +35,7 @@
                                             
                                             <td> {{ $category->category_name }}</td>
 
-                                            <td>
-                                                @if ($category->category_parent == 0)
-                                                    ---Danh mục cha---
-                                                @else
-                                                    @foreach ($all_category_product as $category_parent)
-                                                        @if ($category_parent->category_id == $category->category_parent)
-                                                           Con của: {{ $category_parent->category_name }}
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-
-                                            </td>
+                                           
                                             <td> {{ $category->category_slug }}</td>
                                             <td>
                                                 <?php

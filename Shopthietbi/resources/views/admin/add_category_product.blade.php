@@ -3,9 +3,7 @@
     <div class="content">
         <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
             <h1>Danh mục</h1>
-            <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>Main Category
-            </p>
+           
         </div>
         <div class="ec-cat-list card card-default mb-24px" id="addUser" tabindex="-1" role="dialog">
             <div class=" modal-dialog-centered " role="document">
@@ -59,25 +57,13 @@
                                                                 id="inputEmail4">
                                                         </div> --}}
                                                         <div class="col-md-12">
-                                                            <label for="inputEmail4" class="form-label">Danh mục cha</label>
-                                                            <select name="category_parent" class="form-select">
-                                                                <option
-                                                                            value="">
-                                                                            ---Chọn danh mục cha---
-                                                                        </option>
-                                                                @foreach ($all_category_product as $v_all_category_product)
-                                                                        @if ($v_all_category_product->category_parent ==0)
-                                                                             <option
-                                                                            value="{{$v_all_category_product->category_id}}">
-                                                                            {{$v_all_category_product->category_name}}
-                                                                        </option>
-                                                                        @endif
-                                                                       
-                                                                        
-                                                                   
-                                                                @endforeach
-
-
+                                                            <label for="inputEmail4" class="form-label">Nhóm phụ kiện</label>
+                                                            <select name="accessory_id" class="form-select">
+                                                                @foreach ($all_accessory as $v_all_accessory)
+                                                                    
+                                                                <option value="{{$v_all_accessory->accessory_id}}">{{$v_all_accessory->accessory_name}}</option>
+                                                                
+                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="col-md-12">

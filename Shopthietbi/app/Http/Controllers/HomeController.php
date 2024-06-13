@@ -38,45 +38,41 @@ class HomeController extends Controller
 
 
             $product_ids = [];
-            $order_ids = [];
+
             foreach ($history_product as $key => $v_history_product) {
                 $product_ids[] = $v_history_product->product_id;
 
             }
-            $order_with_product_ids = DB::table('tbl_order')
-                ->join('tbl_customers', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
-                ->join('tbl_order_detail', 'tbl_order_detail.order_id', '=', 'tbl_order.order_id')
-                ->whereIn('tbl_order_detail.product_id', $product_ids)
-                ->whereNotIn('tbl_order.customer_id', [Session::get('customer_id')])
+            $category_with_product_ids = DB::table('tbl_product')
+
+                ->whereIn('product_id', $product_ids)
                 ->get();
-            foreach ($order_with_product_ids as $key => $v_order_with_product_ids) {
-                // Lấy tất cả các order_id của khách hàng khác đã mua sản phẩm cùng loại
-                $orders = DB::table('tbl_order')
-                    ->where('customer_id', $v_order_with_product_ids->customer_id)
-                    ->select('tbl_order.order_id')
-                    ->get()
-                    ->pluck('order_id')  // Chuyển đổi Collection thành mảng các order_id
-                    ->toArray();
-
-                $order_ids = array_merge($order_ids, $orders);  // Gộp tất cả các order_id vào mảng $order_ids
+            $category_ids = [];
+            foreach ($category_with_product_ids as $key => $v_category_with_product_ids) {
+                $category_ids[] = $v_category_with_product_ids->category_id;
             }
-            $RCM_product = DB::table('tbl_order_detail')
-                ->whereIn('order_id', $order_ids)
-                ->join('tbl_product', 'tbl_product.product_id', '=', 'tbl_order_detail.product_id')
-                ->get()->unique('product_id')->values();
 
-            
-            
-          
+            $category_name = DB::table('tbl_category_product')
+                ->whereIn('category_id', $category_ids)
+                ->get();
+
+            $accessory_ids = [];
+            foreach ($category_name as $key => $v_category_name) {
+                $accessory_ids[] = $v_category_name->accessory_id;
+            }            
+            $RCM_product = DB::table('tbl_product')
+                ->whereIn('accessory_id', $accessory_ids)
+                ->get();
+
         }
-  
-        $active_promotion = DB::table('tbl_promotion')->where('promotion_status','Có')->get();
-        
+
+        $active_promotion = DB::table('tbl_promotion')->where('promotion_status', 'Có')->get();
+
         $selling_products = DB::table('tbl_product')
-        ->orderBy('quantity_sold', 'desc')
-        ->take(10)
-        ->get();
-        
+            ->orderBy('quantity_sold', 'desc')
+            ->take(10)
+            ->get();
+
         if (isset($RCM_product)) {
             return view('pages.home')
                 ->with('slider_short', $slider_short)
@@ -115,7 +111,7 @@ class HomeController extends Controller
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        
+
 
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
 
@@ -142,12 +138,12 @@ class HomeController extends Controller
             $query = DB::table('tbl_product')
                 ->leftjoin('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
                 ->where('tbl_category_product.category_slug', $category_slug);
-            $product_by_category = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(2);
+            $product_by_category = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(6);
 
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
-                
+
                 ->with('cart_detail', $cart_detail)
                 ->with('brand', $brand)
                 ->with('category_name', $category_name)
@@ -156,12 +152,12 @@ class HomeController extends Controller
             $query = DB::table('tbl_product')
                 ->leftjoin('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
                 ->where('tbl_category_product.category_slug', $category_slug);
-            $product_by_category = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(2);
+            $product_by_category = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(6);
 
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
-                
+
 
                 ->with('cart_detail', $cart_detail)
                 ->with('brand', $brand)
@@ -171,12 +167,12 @@ class HomeController extends Controller
             $query = DB::table('tbl_product')
                 ->leftjoin('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
                 ->where('tbl_category_product.category_slug', $category_slug);
-            $product_by_category = $query->paginate(2);
+            $product_by_category = $query->paginate(6);
 
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
-                
+
 
                 ->with('cart_detail', $cart_detail)
                 ->with('brand', $brand)
@@ -197,7 +193,7 @@ class HomeController extends Controller
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
-        
+
 
         $brand_name = Brand::where('tbl_brand.brand_slug', $brand_slug)
             ->limit(1)->get();
@@ -207,12 +203,12 @@ class HomeController extends Controller
         if ($filter_by) {
             switch ($filter_by) {
                 case 'low_to_high':
-                    // $query = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(2);
+                    // $query = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(6);
                     Session::put('low_to_high', 'low_to_high');
                     Session::put('high_to_low', null);
                     break;
                 case 'high_to_low':
-                    // $query = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(2);
+                    // $query = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(6);
                     Session::put('high_to_low', 'high_to_low');
                     Session::put('low_to_high', null);
                     break;
@@ -224,7 +220,7 @@ class HomeController extends Controller
             $query = DB::table('tbl_product')
                 ->join('tbl_brand', 'tbl_product.brand_id', '=', 'tbl_brand.brand_id')
                 ->where('tbl_brand.brand_slug', $brand_slug);
-            $product_by_brand = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(2);
+            $product_by_brand = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(6);
 
             return view('pages.show_product_brand')
                 ->with('banner', $banner)
@@ -235,7 +231,7 @@ class HomeController extends Controller
             $query = DB::table('tbl_product')
                 ->join('tbl_brand', 'tbl_product.brand_id', '=', 'tbl_brand.brand_id')
                 ->where('tbl_brand.brand_slug', $brand_slug);
-            $product_by_brand = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(2);
+            $product_by_brand = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(6);
 
             return view('pages.show_product_brand')
                 ->with('banner', $banner)
@@ -246,7 +242,7 @@ class HomeController extends Controller
             $query = DB::table('tbl_product')
                 ->join('tbl_brand', 'tbl_product.brand_id', '=', 'tbl_brand.brand_id')
                 ->where('tbl_brand.brand_slug', $brand_slug);
-            $product_by_brand = $query->paginate(2);
+            $product_by_brand = $query->paginate(6);
 
             return view('pages.show_product_brand')
                 ->with('banner', $banner)
@@ -274,7 +270,7 @@ class HomeController extends Controller
             $rating = DB::table('tbl_comment')
                 ->join('tbl_rating', 'tbl_rating.comment_id', '=', 'tbl_comment.comment_id')
                 ->where('product_id', $v_product_detail->product_id)
-                ->orderBy('tbl_comment.comment_id', 'desc')->paginate(5);
+                ->orderBy('tbl_comment.comment_id', 'desc')->paginate(6);
             if ($rating->isEmpty()) {
 
             } else {
@@ -438,7 +434,7 @@ class HomeController extends Controller
         $filter_price = DB::table('tbl_product')
             ->whereBetween(DB::raw('CAST(product_price AS UNSIGNED)'), [$start_price, $end_price])
             ->orderBy('product_price', 'asc')
-            ->paginate(2);
+            ->paginate(6);
 
         return view('pages.filter_price')->with(compact('cart_detail', 'category', 'brand', 'filter_price'));
     }
@@ -456,7 +452,7 @@ class HomeController extends Controller
         $searched = $request->searched;
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        
+
 
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         Session::put('searched', $searched);
@@ -481,7 +477,7 @@ class HomeController extends Controller
         if (Session::get('low_to_high_search') != null) {
             $query = DB::table('tbl_product')->where('product_name', 'like', '%' . $search . '%');
             $search_product = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')
-                ->paginate(2);
+                ->paginate(6);
 
             return view('pages.search')
                 ->with('cart_detail', $cart_detail)
@@ -489,7 +485,7 @@ class HomeController extends Controller
         } elseif (Session::get('high_to_low_search') != null) {
             $query = DB::table('tbl_product')->where('product_name', 'like', '%' . $search . '%');
             $search_product = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')
-                ->paginate(2);
+                ->paginate(6);
 
             return view('pages.search')
                 ->with('cart_detail', $cart_detail)

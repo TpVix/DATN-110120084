@@ -4,9 +4,7 @@
 <div class="content">
   <div class="breadcrumb-wrapper breadcrumb-wrapper-2">
     <h1>Chi tiết đơn hàng</h1>
-    <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-      <span><i class="mdi mdi-chevron-right"></i></span>Orders
-    </p>
+   
   </div>
   <div class="row">
     <div class="col-12">

@@ -4,8 +4,7 @@
 <div class="content">
   <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
           <h1>Danh sách danh mục</h1>
-          <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-              <span><i class="mdi mdi-chevron-right"></i></span>Main Category</p>
+         
   </div>
   <div class="row">
 <div class="col-12">

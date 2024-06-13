@@ -26,7 +26,7 @@
                           
                                   <th>Giá</th>
                               
-                                  
+                                  <th>Nhóm phụ kiện</th>
                                   <th>Tên thương hiệu</th>
                                  
                                   <th>Hành động</th>
@@ -41,6 +41,7 @@
                           
                               <td>{{ $product -> product_price}}</td>
                          
+                              <td>{{ $product -> accessory_name}}</td>
                               <td>{{ $product -> brand_name}}</td>
                               
                 

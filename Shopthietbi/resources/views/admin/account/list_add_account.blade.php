@@ -4,9 +4,7 @@
         <div class="breadcrumb-wrapper breadcrumb-contacts">
             <div>
                 <h1>Danh sách tài khoản</h1>
-                <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-                    <span><i class="mdi mdi-chevron-right"></i></span>Tài khoản
-                </p>
+                
             </div>
             <div>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser"> Thêm nhân viên

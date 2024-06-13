@@ -3,9 +3,7 @@
     <div class="content">
         <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
             <h1>Chương trình khuyến mãi</h1>
-            <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>Sub Category
-            </p>
+            
         </div>
         <div class="row">
             <div class="col-xl-4 col-lg-12">
