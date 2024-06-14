@@ -38,17 +38,18 @@ Route::get('/delete-wishlist/{product_id}', 'CustomerController@delete_wishlist'
 //Sản phẩm theo danh mục
 Route::get('/danh-muc/{category_slug}', 'HomeController@show_product_category');
 Route::get('/thuong-hieu/{brand_slug}', 'HomeController@show_product_brand');
+Route::get('/phu-kien/{accessory_slug}', 'HomeController@show_product_accessory');
 
 //Chi tiết sản phẩm
 Route::get('/san-pham/{product_slug}', 'HomeController@product_detail');
 
 //coupon
-Route::get('/unset-coupon', 'CouponController@unset_coupon');
-Route::get('/insert-coupon', 'CouponController@insert_coupon');
-Route::post('/discount-cart', 'CartController@discount_cart');
-Route::post('/save-coupon', 'CouponController@save_coupon');
-Route::get('/list-coupon', 'CouponController@list_coupon');
-Route::get('/delete-coupon/{coupon_id}', 'CouponController@delete_coupon');
+// Route::get('/unset-coupon', 'CouponController@unset_coupon');
+// Route::get('/insert-coupon', 'CouponController@insert_coupon');
+// Route::post('/discount-cart', 'CartController@discount_cart');
+// Route::post('/save-coupon', 'CouponController@save_coupon');
+// Route::get('/list-coupon', 'CouponController@list_coupon');
+// Route::get('/delete-coupon/{coupon_id}', 'CouponController@delete_coupon');
 //Cart
 // Route::post('/save-cart', 'CartController@save_cart');
 Route::get('/show-cart', 'CartController@show_cart');
@@ -87,6 +88,10 @@ Route::group(['middleware' => ['auth:admin', 'checkAdminRole:Quản trị viên,
     Route::get('/list-account', 'AdminController@list_account');
    
 });
+Route::get('/account-profile/{admin_id}', 'AdminController@account_profile');
+Route::post('/update-profile/{admin_id}', 'AdminController@update_profile');
+Route::post('/update-phone/{admin_id}', 'AdminController@update_phone');
+
 Route::group(['middleware' => ['auth:admin', 'checkAdminRole:Quản trị viên']], function () {
     Route::post('/save-admin', 'AdminController@save_admin');
     Route::get('/delete-account/{admin_id}', 'AdminController@delete_account');

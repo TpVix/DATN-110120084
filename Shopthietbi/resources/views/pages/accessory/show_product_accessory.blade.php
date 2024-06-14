@@ -6,30 +6,31 @@
     <div class="home-slider slide-animate owl-carousel owl-theme show-nav-hover nav-big mb-2 text-uppercase" data-owl-options="{
         'loop': false
     }">
-        
     @foreach ($banner as $banner)    
     <div class="home-slide2 banner banner-md-vw">
         <img style="background-color: #ccc; min-height:290px; max-height:290px;" width="1476"src="{{URL::to('public/upload/banner/'.$banner -> slider_image)}}" alt="slider image">
         
     </div>
     @endforeach
+  
 </div>
 
     <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{URL::to('/')}}"><i class="icon-home"></i></a></li>
-             
-
-                @foreach ($brand_name as $key => $brand_name)
-                @if ($brand_name !=null)
-                <li class="breadcrumb-item">Thương hiệu</li>
-                <li class="breadcrumb-item active" aria-current="page">{{($brand_name -> brand_name)}}</li>
+                @foreach ($accessory_name as $key => $accessory_name)
+                <li class="breadcrumb-item">Danh mục</li>
+                
+                @if ($accessory_name !=null)
+                <li class="breadcrumb-item active" aria-current="page">{{($accessory_name -> accessory_name)}}</li>
+                
                 @else
 
                 @endif
                 
                 @endforeach
+
             </ol>
         </nav>
 
@@ -56,10 +57,12 @@
                             </svg>
                             <span>Filter</span>
                         </a>
-                        <form action="{{URL::to('/thuong-hieu/'.$brand_name->brand_slug)}}" method="get">
-                        <div class="toolbox-item toolbox-sort">
-                           
-                            @if ( Session::get('low_to_high')!=null)
+
+                        <form action="{{URL::to('/phu-kien/'.$accessory_name->accessory_slug)}}" method="get">
+                            <div class="toolbox-item toolbox-sort">
+   
+                                
+                                @if ( Session::get('low_to_high_accessory')!=null)
                                 <div class="select-custom">
                                     <select name="filter_by" class="form-control">
                                         <option value="date">--Lọc--</option>
@@ -67,7 +70,7 @@
                                         <option value="high_to_low">Giá: Cao đến thấp</option>
                                     </select>
                                 </div>
-                            @elseif(Session::get('high_to_low')!=null)
+                            @elseif(Session::get('high_to_low_accessory')!=null)
                             <div class="select-custom">
                                 <select name="filter_by" class="form-control">
                                     <option value="date">--Lọc--</option>
@@ -85,38 +88,36 @@
                                 </select>
                             </div> 
                             @endif
-                           
-                            <!-- End .select-custom -->
-                            <button type="submit" style="height: 34px; display: flex; align-items: center;margin-left:1.1rem;text-transform: none;" class="btn btn-outline-dark">Lọc</button>
-                            
-                        </div>
-                    </form>
+                                <!-- End .select-custom -->
+                                <button type="submit" style="height: 34px; display: flex; align-items: center;margin-left:1.1rem;text-transform: none;" class="btn btn-outline-dark">Lọc</button>
+                                
+                            </div>
+                        </form>
                         <!-- End .toolbox-item -->
                     </div>
                     <!-- End .toolbox-left -->
 
-                   
+                  
                     <!-- End .toolbox-right -->
                 </nav>
 
-                <div class="row" >
+                <div class="row">
                  
                    
-                    @foreach ($product_by_brand as $key => $product_brand)
-
+                    @foreach ($product_by_accessory as $key => $product_all_accessory)
 
                     <div class="col-6 col-sm-4">
                         <div class="product-default">
                             <figure>
-                                <a href="{{URL::to('/san-pham/'.$product_brand-> product_slug)}}">
-                                    <img src="{{URL::to('public/upload/'.$product_brand -> product_image)}}" style="width: 280px; height: 280px;"alt="product">
-                                    <img src="{{URL::to('public/upload/'.$product_brand -> product_image)}}" style="transform: scaleX(-1);width: 280px; height: 280px;" alt="product" />
+                                <a href="{{URL::to('/san-pham/'.$product_all_accessory-> product_slug)}}">
+                                    <img src="{{URL::to('public/upload/'.$product_all_accessory -> product_image)}}" style="width: 280px; height: 280px;"alt="product">
+                                    <img src="{{URL::to('public/upload/'.$product_all_accessory -> product_image)}}" style="transform: scaleX(-1);width: 280px; height: 280px;" alt="product" />
                                 </a>
 
-                                {{-- @if ($product_brand-> product_status == '1')
+                                {{-- @if ($product_all_accessory-> product_status == '1')
                                 <div class="label-group">
                                     <div class="product-label label-hot"> 
-                                        Giảm: {{ round(100 - (($product_brand->product_sale_price / $product_brand->product_price) * 100)) }}%
+                                        Giảm: {{ round(100 - (($product_all_accessory->product_sale_price / $product_all_accessory->product_price) * 100)) }}%
                                     </div>
                                 </div>
                                 @else
@@ -125,13 +126,9 @@
                             </figure>
 
                             <div class="product-details">
-                                <div class="category-wrap">
-                                    <div class="category-list">
-                                        <a href="category.html" class="product-category">category</a>
-                                    </div>
-                                </div>
+                               
 
-                                <h3 class="product-title"> <a href="product.html">{{($product_brand-> product_name)}}</a>
+                                <h3 class="product-title"> <a href="product.html">{{($product_all_accessory-> product_name)}}</a>
                                 </h3>
 
                                 <div class="ratings-container">
@@ -142,7 +139,7 @@
                                             $total_start = 0;
                                             $rating = DB::table('tbl_comment')
                                             ->join('tbl_rating', 'tbl_rating.comment_id', '=', 'tbl_comment.comment_id')
-                                            ->where('product_id',$product_brand->product_id)
+                                            ->where('product_id',$product_all_accessory->product_id)
                                             ->orderBy('rating_id','desc') ->get();
                                             
                                             foreach ($rating as $key => $v_rating) {
@@ -184,22 +181,22 @@
                                 </div>
                                 <!-- End .product-container -->
 
-                                @if ($product_brand->promotion_id != 0)
+                                @if ($product_all_accessory->promotion_id != 0)
                                     @php
                                         $active_promotion_new = DB::table('tbl_promotion')
                                             ->where('promotion_status', 'Có')
-                                            ->where('promotion_id', $product_brand->promotion_id)
+                                            ->where('promotion_id', $product_all_accessory->promotion_id)
                                             ->get();
                                     @endphp
                                     <div class="price-box">
-                                        <del class="old-price">{{ number_format($product_brand->product_price) }}</del><br>
+                                        <del class="old-price">{{ number_format($product_all_accessory->product_price) }}</del><br>
                                         @foreach ($active_promotion_new as $v_active_promotion)
                                             @if ($v_active_promotion->promotion_option == '%')
                                                 <span style="color:red;"
-                                                    class="product-price">{{ number_format(($product_brand->product_price * (100 - $v_active_promotion->promotion_price)) / 100) . ' ' . 'VNĐ' }}</span>
+                                                    class="product-price">{{ number_format(($product_all_accessory->product_price * (100 - $v_active_promotion->promotion_price)) / 100) . ' ' . 'VNĐ' }}</span>
                                             @else
                                                 <span style="color:red;"
-                                                    class="product-price">{{ number_format($product_brand->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
+                                                    class="product-price">{{ number_format($product_all_accessory->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
                                             @endif
                                         @endforeach
                                     </div>
@@ -207,46 +204,44 @@
                                     <div class="price-box">
                                         <del class="old-price"></del><br>
                                         <span style="color:red;"
-                                            class="product-price">{{ number_format($product_brand->product_price) . ' ' . 'VNĐ' }}</span>
+                                            class="product-price">{{ number_format($product_all_accessory->product_price) . ' ' . 'VNĐ' }}</span>
                                     </div>
                                 @endif
                                 <!-- End .price-box -->
-                                <p style="color:#999;font-size: 1.4rem;">Đã bán: {{$product_brand-> quantity_sold}}</p>
+                                <p style="color:#999;font-size: 1.4rem;">Đã bán: {{$product_all_accessory-> quantity_sold}}</p>
 
                                 <div class="product-action">
-                                    
-                              
-                                           
+                                  
                                             <form action="{{URL::to('/add-cart')}}" method="post">
                                                 @csrf
-                                                <input type="hidden" name="cart_product_id" value="{{$product_brand-> product_id}}"
-                                                class="cart_product_id_{{$product_brand-> product_id}}">
-                                                <input type="hidden" name="cart_product_name" value="{{$product_brand-> product_name}}"
-                                                class="cart_product_name_{{$product_brand-> product_id}}">
-                                                <input type="hidden" name="cart_product_image" value="{{$product_brand-> product_image}}"
-                                                class="cart_product_image_{{$product_brand-> product_id}}">
-                                                @if ($product_brand->promotion_id != 0)
+                                                <input type="hidden" name="cart_product_id" value="{{$product_all_accessory-> product_id}}"
+                                                class="cart_product_id_{{$product_all_accessory-> product_id}}">
+                                                <input type="hidden" name="cart_product_name" value="{{$product_all_accessory-> product_name}}"
+                                                class="cart_product_name_{{$product_all_accessory-> product_id}}">
+                                                <input type="hidden" name="cart_product_image" value="{{$product_all_accessory-> product_image}}"
+                                                class="cart_product_image_{{$product_all_accessory-> product_id}}">
+                                                @if ($product_all_accessory->promotion_id != 0)
                                         @php
                                             $active_promotion_new = DB::table('tbl_promotion')
                                                 ->where('promotion_status', 'Có')
-                                                ->where('promotion_id', $product_brand->promotion_id)
+                                                ->where('promotion_id', $product_all_accessory->promotion_id)
                                                 ->get();
                                         @endphp
                                             @foreach ($active_promotion_new as $v_active_promotion)
                                                 @if ($v_active_promotion->promotion_option == '%')
                                                     <input type="hidden" name="cart_product_price"
-                                                        value="{{ ($product_brand->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
-                                                        class="cart_product_price_{{ $product_brand->product_id }}">
+                                                        value="{{ ($product_all_accessory->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
+                                                        class="cart_product_price_{{ $product_all_accessory->product_id }}">
                                                 @else
                                                     <input type="hidden" name="cart_product_price"
-                                                        value="{{ $product_brand->product_price - $v_active_promotion->promotion_price }}"
-                                                        class="cart_product_price_{{ $product_brand->product_id }}">
+                                                        value="{{ $product_all_accessory->product_price - $v_active_promotion->promotion_price }}"
+                                                        class="cart_product_price_{{ $product_all_accessory->product_id }}">
                                                 @endif
                                             @endforeach
                                         @else
                                             <input type="hidden" name="cart_product_price"
-                                                value="{{ $product_brand->product_price }}"
-                                                class="cart_product_price_{{ $product_brand->product_id }}">
+                                                value="{{ $product_all_accessory->product_price }}"
+                                                class="cart_product_price_{{ $product_all_accessory->product_id }}">
                                         @endif
                                                 <input type="hidden" name="cart_product_qty" value="1" class="" >
                                                 <?php 
@@ -259,7 +254,6 @@
                                                 <button type="submit" href="#" class="btn-icon btn-add-cart1 product-type-simple"><i
                                                     class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ HÀNG</span></button>
                                                 @endif
-                                               
                                             </form>
                                 </div>
                             </div>
@@ -270,14 +264,10 @@
                 </div>
                 <!-- End .row -->
 
-                <nav style="justify-content:flex-end;" class="toolbox toolbox-pagination ">
-                    
-                    <!-- End .toolbox-item -->
+                <nav style="justify-content:flex-end;" class="toolbox toolbox-pagination ">                    
 
                     <ul class="pagination toolbox-item">
-                       
-                        {{$product_by_brand->links() }}
-                    
+                        {{$product_by_accessory->links()}}
                     </ul>
                 </nav>
             </div>
@@ -293,19 +283,19 @@
 
                         <div class="collapse show" id="widget-body-2">
                             <div class="widget-body">
-                                <ul class="cat-list">
-                                    @foreach ($category as $key => $category1)
-                                      
-                                            <li>
-                                                <a href="{{ URL::to('/danh-muc/'.$category1->category_slug) }}" id="category_parent_{{$category1->category_id}}" role="button" aria-expanded="false" aria-controls="widget-category-{{$category1->category_id}}">
-                                                    {{ $category1->category_name }}
+                                    <ul class="cat-list">
+                                        @foreach ($category as $key => $category1)
+                                            
+                                                <li>
+                                                    <a href="{{ URL::to('/danh-muc/'.$category1->category_slug) }}"  role="button" aria-expanded="false">
+                                                        {{ $category1->category_name }}
+                                                        
+                                                    </a>
                                                     
-                                                </a>
-                                               
-                                            </li>
-                                       
-                                    @endforeach
-                                </ul>
+                                                </li>
+                                            
+                                        @endforeach
+                                    </ul>
                             </div>
                             <!-- End .widget-body -->
                         </div>
@@ -321,12 +311,12 @@
                                 <ul class="cat-list">
                                     @foreach ($brand as $key => $brand1)
                                     <li>
-                                        <a href="{{URL::to('/thuong-hieu/'.$brand1-> brand_slug)}}"  role="button" aria-expanded="true" aria-controls="widget-category-1">
+                                        <a href="{{URL::to('/thuong-hieu/'.$brand1-> brand_slug)}}"  role="button" aria-expanded="true" aria-controls="widget-all_accessory-1">
                                             {{($brand1 -> brand_name)}}
                                             {{-- <span class="products-count">(3)</span> --}}
                                             {{-- <span class="toggle"></span> --}}
                                         </a>
-                                        {{-- <div class="collapse show" id="widget-category-1">
+                                        {{-- <div class="collapse show" id="widget-all_accessory-1">
                                             <ul class="cat-sublist">
                                                 <li>Caps<span class="products-count">(1)</span></li>
                                                 <li>Watches<span class="products-count">(2)</span></li>
@@ -341,6 +331,7 @@
                         </div>
                         <!-- End .collapse -->
                     </div>
+                    <!-- End .widget -->
                     <div class="widget">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="true" aria-controls="widget-body-3">Lọc theo giá</a>
@@ -376,6 +367,7 @@
                         <!-- End .collapse -->
                     </div>
                    
+                  
                 </div>
                 <!-- End .sidebar-wrapper -->
             </aside>

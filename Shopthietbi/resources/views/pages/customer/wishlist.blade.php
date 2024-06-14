@@ -7,9 +7,9 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="demo4.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">TRANG CHỦ</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Wishlist
+                            Danh sách mong đợi
                         </li>
                     </ol>
                 </div>

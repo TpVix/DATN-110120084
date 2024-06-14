@@ -43,9 +43,9 @@
                       Xem <i class="fa fa-pencil-square-o text-success text-active"></i>
                   </a>
                   
-                    <a onclick="return confirm('Bạn có chắc muốn xoá ?')" href="{{URL::to('/delete-order/'.$all_order->order_id)}}" class="btn btn-outline-danger" ui-toggle-class="">
+                    {{-- <a onclick="return confirm('Bạn có chắc muốn xoá ?')" href="{{URL::to('/delete-order/'.$all_order->order_id)}}" class="btn btn-outline-danger" ui-toggle-class="">
                       Xoá  <i class="fa fa-times text-danger text"></i>
-                    </a>
+                    </a> --}}
                   </td>
 
                 </tr>

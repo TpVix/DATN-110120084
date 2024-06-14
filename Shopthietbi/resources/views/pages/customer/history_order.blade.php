@@ -55,7 +55,7 @@
                         </td>
                         <td class=" p-0" >
                             <a class="btn btn-primary" href="{{URL::to('/order-detail/' . $history_order -> order_id)}}">Chi tiết</a>
-                            @if ($history_order -> order_status=='Đã huỷ' || $history_order -> order_status=='Đặt thành công' ||$history_order -> order_status=='Đang giao')
+                            @if ($history_order -> order_status=='Đã huỷ' || $history_order -> order_status=='Đã nhận hàng' ||$history_order -> order_status=='Đặt thành công, Đang giao hàng')
                                 
                             @else
                             <a onclick="return confirm('Bạn có chắc muốn huỷ đơn hàng ?')" class="btn btn-danger" href="{{URL::to('/cancel-order/'.$history_order -> order_id)}}"><i class="fa fa-times"></i>Huỷ đơn</a>
@@ -68,7 +68,7 @@
             </table>
             <hr class="mt-0 mb-3 pb-2" />
 
-            <a href="category.html" class="btn btn-dark">Go Shop</a>
+            <a href="{{url('/')}}" class="btn btn-dark">Mua sắm</a>
         </div>
     </div>
 </div>

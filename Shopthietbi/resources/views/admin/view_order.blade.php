@@ -57,7 +57,7 @@
                 @endphp
                 <div class="info-content">
                   Ghi chú: {{ $order_detail -> shipping_note}}<br>
-                  Ngày đặt hàng: {{ $order_detail->created_at ? Carbon::parse($order_detail->created_at)->format('d/m/Y') : 'N/A' }}
+                  Ngày đặt hàng: {{ $order_detail->created_at ? Carbon::parse($order_detail->created_at)->format('H:i d/m/Y') : 'N/A' }}
                 </div>
               </address>
             </div>
@@ -145,56 +145,7 @@
         </div>
       </div>
       <!-- Tracking Detail -->
-      <div class="card mt-4 trk-order">
-        <div class="p-4 text-center text-white text-lg bg-dark rounded-top">
-          <span class="text-uppercase">Tracking Order No - </span>
-          <span class="text-medium">34VB5540K83</span>
-        </div>
-        <div
-          class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
-          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Shipped
-              Via:</span> UPS Ground</div>
-          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span>
-            Checking Quality</div>
-          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected
-              Date:</span> DEC 09, 2021</div>
-        </div>
-        <div class="card-body">
-          <div
-            class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-            <div class="step completed">
-              <div class="step-icon-wrap">
-                <div class="step-icon"><i class="mdi mdi-cart"></i></div>
-              </div>
-              <h4 class="step-title">Confirmed Order</h4>
-            </div>
-            <div class="step completed">
-              <div class="step-icon-wrap">
-                <div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
-              </div>
-              <h4 class="step-title">Processing Order</h4>
-            </div>
-            <div class="step completed">
-              <div class="step-icon-wrap">
-                <div class="step-icon"><i class="mdi mdi-gift"></i></div>
-              </div>
-              <h4 class="step-title">Product Dispatched</h4>
-            </div>
-            <div class="step">
-              <div class="step-icon-wrap">
-                <div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
-              </div>
-              <h4 class="step-title">On Delivery</h4>
-            </div>
-            <div class="step">
-              <div class="step-icon-wrap">
-                <div class="step-icon"><i class="mdi mdi-hail"></i></div>
-              </div>
-              <h4 class="step-title">Product Delivered</h4>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </div>
 </div>

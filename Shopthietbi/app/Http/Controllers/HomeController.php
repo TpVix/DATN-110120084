@@ -20,6 +20,7 @@ class HomeController extends Controller
         $seven_days_ago = Carbon::now()->subDays(7);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $new_product = DB::table('tbl_product')
             ->whereBetween('created_at', [$seven_days_ago, Carbon::now()])
@@ -59,7 +60,7 @@ class HomeController extends Controller
             $accessory_ids = [];
             foreach ($category_name as $key => $v_category_name) {
                 $accessory_ids[] = $v_category_name->accessory_id;
-            }            
+            }
             $RCM_product = DB::table('tbl_product')
                 ->whereIn('accessory_id', $accessory_ids)
                 ->get();
@@ -79,6 +80,8 @@ class HomeController extends Controller
                 ->with('slider_large', $slider_large)
                 ->with('cart_detail', $cart_detail)
                 ->with('category', $category)
+
+                ->with('all_accessory', $all_accessory)
                 ->with('selling_products', $selling_products)
                 ->with('brand', $brand)
                 ->with('active_promotion', $active_promotion)
@@ -89,9 +92,11 @@ class HomeController extends Controller
                 ->with('slider_short', $slider_short)
                 ->with('slider_large', $slider_large)
                 ->with('cart_detail', $cart_detail)
+                ->with('all_accessory', $all_accessory)
                 ->with('active_promotion', $active_promotion)
                 ->with('selling_products', $selling_products)
                 ->with('category', $category)
+
                 ->with('brand', $brand)
                 ->with('new_product', $new_product);
         }
@@ -100,6 +105,8 @@ class HomeController extends Controller
     }
     public function show_product_category($category_slug, Request $request)
     {
+        Session::put('low_to_high_accessory', null);
+        Session::put('high_to_low_accessory', null);
         Session::put('low_to_high', null);
         Session::put('high_to_low', null);
         Session::put('low_to_high_search', null);
@@ -111,7 +118,7 @@ class HomeController extends Controller
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
 
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
 
@@ -143,6 +150,7 @@ class HomeController extends Controller
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                ->with('all_accessory', $all_accessory)
 
                 ->with('cart_detail', $cart_detail)
                 ->with('brand', $brand)
@@ -157,6 +165,7 @@ class HomeController extends Controller
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                ->with('all_accessory', $all_accessory)
 
 
                 ->with('cart_detail', $cart_detail)
@@ -172,6 +181,7 @@ class HomeController extends Controller
             return view('pages.show_product_category')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                ->with('all_accessory', $all_accessory)
 
 
                 ->with('cart_detail', $cart_detail)
@@ -180,8 +190,96 @@ class HomeController extends Controller
                 ->with('product_by_category', $product_by_category);
         }
     }
+
+    public function show_product_accessory($accessory_slug, Request $request)
+    {
+        Session::put('low_to_high_cat', null);
+        Session::put('high_to_low_cat', null);
+        Session::put('low_to_high', null);
+        Session::put('high_to_low', null);
+        Session::put('low_to_high_search', null);
+        Session::put('high_to_low_search', null);
+        $min_price = DB::table('tbl_product')->min(DB::raw('CAST(product_price AS UNSIGNED)')) - 100000;
+        $max_price = DB::table('tbl_product')->max(DB::raw('CAST(product_price AS UNSIGNED)')) + 100000;
+        Session::put('min_price', $min_price);
+        Session::put('max_price', $max_price);
+
+        $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+
+        $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
+
+        $accessory_name = DB::table('tbl_accessory')->where('tbl_accessory.accessory_slug', $accessory_slug)
+            ->limit(1)->get();
+        $banner = DB::table('tbl_slider')->where('slider_option', 3)->where('slider_status', 1)->get();
+
+        $filter_by = $request->filter_by;
+        if ($filter_by) {
+            switch ($filter_by) {
+                case 'low_to_high':
+                    Session::put('low_to_high_accessory', 'low_to_high_accessory');
+                    Session::put('high_to_low_accessory', null);
+                    break;
+                case 'high_to_low':
+                    Session::put('high_to_low_accessory', 'high_to_low_accessory');
+                    Session::put('low_to_high_accessory', null);
+
+                    break;
+            }
+        }
+
+        if (Session::get('low_to_high_accessory') != null) {
+            $query = DB::table('tbl_product')
+                ->leftjoin('tbl_accessory', 'tbl_product.accessory_id', '=', 'tbl_accessory.accessory_id')
+                ->where('tbl_accessory.accessory_slug', $accessory_slug);
+            $product_by_accessory = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'asc')->paginate(6);
+
+            return view('pages.accessory.show_product_accessory')
+                ->with('banner', $banner)
+                ->with('category', $category)
+                ->with('all_accessory', $all_accessory)
+
+                ->with('cart_detail', $cart_detail)
+                ->with('brand', $brand)
+                ->with('accessory_name', $accessory_name)
+                ->with('product_by_accessory', $product_by_accessory);
+        } elseif (Session::get('high_to_low_accessory') != null) {
+            $query = DB::table('tbl_product')
+                ->leftjoin('tbl_accessory', 'tbl_product.accessory_id', '=', 'tbl_accessory.accessory_id')
+                ->where('tbl_accessory.accessory_slug', $accessory_slug);
+                $product_by_accessory = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')->paginate(6);
+
+            return view('pages.accessory.show_product_accessory')
+            ->with('banner', $banner)
+            ->with('category', $category)
+            ->with('all_accessory', $all_accessory)
+
+            ->with('cart_detail', $cart_detail)
+            ->with('brand', $brand)
+            ->with('accessory_name', $accessory_name)
+            ->with('product_by_accessory', $product_by_accessory);
+        } else {
+            $query = DB::table('tbl_product')
+                ->leftjoin('tbl_accessory', 'tbl_product.accessory_id', '=', 'tbl_accessory.accessory_id')
+                ->where('tbl_accessory.accessory_slug', $accessory_slug);
+            $product_by_accessory = $query->paginate(6);
+
+            return view('pages.accessory.show_product_accessory')
+            ->with('banner', $banner)
+            ->with('category', $category)
+            ->with('all_accessory', $all_accessory)
+
+            ->with('cart_detail', $cart_detail)
+            ->with('brand', $brand)
+            ->with('accessory_name', $accessory_name)
+            ->with('product_by_accessory', $product_by_accessory);
+        }
+    }
     public function show_product_brand($brand_slug, Request $request)
     {
+        Session::put('low_to_high_accessory', null);
+        Session::put('high_to_low_accessory', null);
         Session::put('low_to_high_cat', null);
         Session::put('high_to_low_cat', null);
         Session::put('low_to_high_search', null);
@@ -192,6 +290,7 @@ class HomeController extends Controller
         Session::put('max_price', $max_price);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
 
 
@@ -225,6 +324,7 @@ class HomeController extends Controller
             return view('pages.show_product_brand')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                ->with('all_accessory', $all_accessory)
                 ->with('cart_detail', $cart_detail)->with('brand_name', $brand_name)
                 ->with('brand', $brand)->with('product_by_brand', $product_by_brand);
         } elseif (Session::get('high_to_low') != null) {
@@ -236,6 +336,7 @@ class HomeController extends Controller
             return view('pages.show_product_brand')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                ->with('all_accessory', $all_accessory)
                 ->with('cart_detail', $cart_detail)->with('brand_name', $brand_name)
                 ->with('brand', $brand)->with('product_by_brand', $product_by_brand);
         } else {
@@ -247,6 +348,7 @@ class HomeController extends Controller
             return view('pages.show_product_brand')
                 ->with('banner', $banner)
                 ->with('category', $category)
+                ->with('all_accessory', $all_accessory)
                 ->with('cart_detail', $cart_detail)->with('brand_name', $brand_name)
                 ->with('brand', $brand)->with('product_by_brand', $product_by_brand);
         }
@@ -257,6 +359,7 @@ class HomeController extends Controller
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
         $product_detail = DB::table('tbl_product')
             ->leftjoin('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
@@ -310,6 +413,7 @@ class HomeController extends Controller
             ->with('image_detail', $image_detail)
             ->with('cart_detail', $cart_detail)
             ->with('category', $category)
+            ->with('all_accessory', $all_accessory)
             ->with('brand', $brand)
             ->with('product_detail', $product_detail)
             ->with('rating', $rating)
@@ -371,11 +475,13 @@ class HomeController extends Controller
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $customer = Customer::where('customer_id', $customer_id)->first();
         return view('pages.customer.my_account')
             ->with('cart_detail', $cart_detail)
             ->with('category', $category)
+            ->with('all_accessory', $all_accessory)
             ->with('brand', $brand)
             ->with('customer', $customer);
     }
@@ -405,6 +511,7 @@ class HomeController extends Controller
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $address = DB::table('tbl_address')
             ->join('tbl_tinhthanhpho', 'tbl_tinhthanhpho.matp', '=', 'tbl_address.matp')
@@ -418,6 +525,7 @@ class HomeController extends Controller
             ->with('customer', $customer)
             ->with('cart_detail', $cart_detail)
             ->with('category', $category)
+            ->with('all_accessory', $all_accessory)
             ->with('brand', $brand)
             ->with('address', $address);
     }
@@ -429,14 +537,16 @@ class HomeController extends Controller
         Session::put('max_price', $max_price);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
 
         $filter_price = DB::table('tbl_product')
             ->whereBetween(DB::raw('CAST(product_price AS UNSIGNED)'), [$start_price, $end_price])
             ->orderBy('product_price', 'asc')
             ->paginate(6);
-
-        return view('pages.filter_price')->with(compact('cart_detail', 'category', 'brand', 'filter_price'));
+        return view('pages.filter_price')->with(compact('cart_detail', 'category', 'brand', 'filter_price','all_accessory'));
     }
 
     public function search($search, Request $request)
@@ -445,6 +555,8 @@ class HomeController extends Controller
         $max_price = DB::table('tbl_product')->max(DB::raw('CAST(product_price AS UNSIGNED)')) + 100000;
         Session::put('min_price', $min_price);
         Session::put('max_price', $max_price);
+        Session::put('low_to_high_accessory', null);
+        Session::put('high_to_low_accessory', null);
         Session::put('low_to_high', null);
         Session::put('high_to_low', null);
         Session::put('low_to_high_cat', null);
@@ -452,7 +564,7 @@ class HomeController extends Controller
         $searched = $request->searched;
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-
+        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
 
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         Session::put('searched', $searched);
@@ -481,7 +593,8 @@ class HomeController extends Controller
 
             return view('pages.search')
                 ->with('cart_detail', $cart_detail)
-                ->with('category', $category)->with('brand', $brand)->with('search_product', $search_product);
+                ->with('category', $category)
+                ->with('all_accessory', $all_accessory)->with('brand', $brand)->with('search_product', $search_product);
         } elseif (Session::get('high_to_low_search') != null) {
             $query = DB::table('tbl_product')->where('product_name', 'like', '%' . $search . '%');
             $search_product = $query->orderBy(DB::raw('CAST(product_price AS DECIMAL(10,2))'), 'desc')
@@ -489,14 +602,16 @@ class HomeController extends Controller
 
             return view('pages.search')
                 ->with('cart_detail', $cart_detail)
-                ->with('category', $category)->with('brand', $brand)->with('search_product', $search_product);
+                ->with('category', $category)
+                ->with('all_accessory', $all_accessory)->with('brand', $brand)->with('search_product', $search_product);
         } else {
             $query = DB::table('tbl_product')->where('product_name', 'like', '%' . $search . '%');
             $search_product = $query->paginate(2)->appends($request->except('page'));
 
             return view('pages.search')
                 ->with('cart_detail', $cart_detail)
-                ->with('category', $category)->with('brand', $brand)->with('search_product', $search_product);
+                ->with('category', $category)
+                ->with('all_accessory', $all_accessory)->with('brand', $brand)->with('search_product', $search_product);
         }
 
     }

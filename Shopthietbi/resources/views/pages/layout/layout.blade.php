@@ -315,6 +315,21 @@
                                 </ul>
                             </li>
                             <li>
+                                <a href="#">Phụ kiện</a>
+                                <ul>
+									@foreach ($all_accessory as $key => $v_all_accessory)
+                            
+									<li>
+                                       
+                                            <a href="{{URL::to('/phu-kien/'.$v_all_accessory-> accessory_slug)}}">{{($v_all_accessory -> accessory_name)}}</a> 
+                                       
+                                        
+                                        
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            <li>
                                 <a href="#">Thương hiệu</a>
                                 <ul>
                                     @foreach ($brand as $key => $brand)
