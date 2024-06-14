@@ -44,26 +44,44 @@ class HomeController extends Controller
                 $product_ids[] = $v_history_product->product_id;
 
             }
+            
             $category_with_product_ids = DB::table('tbl_product')
-
                 ->whereIn('product_id', $product_ids)
                 ->get();
             $category_ids = [];
             foreach ($category_with_product_ids as $key => $v_category_with_product_ids) {
                 $category_ids[] = $v_category_with_product_ids->category_id;
             }
-
+            
+            
             $category_name = DB::table('tbl_category_product')
                 ->whereIn('category_id', $category_ids)
                 ->get();
+                if ($category_name == '[]') {
+                    $accessory_by_category=[];
+                    foreach ($category_with_product_ids as $key => $accessory_category_with_product_ids) {
+                        $accessory_by_category[]=$accessory_category_with_product_ids->accessory_id;
+    
+                    }
+                    
+                    $RCM_product = DB::table('tbl_product')
+                    ->whereIn('accessory_id', $accessory_by_category)
+                    ->whereNotIn('product_id',$product_ids)
+                    ->get();
 
-            $accessory_ids = [];
-            foreach ($category_name as $key => $v_category_name) {
-                $accessory_ids[] = $v_category_name->accessory_id;
-            }
-            $RCM_product = DB::table('tbl_product')
-                ->whereIn('accessory_id', $accessory_ids)
-                ->get();
+                    
+                } else {
+                    $accessory_ids = [];
+                    foreach ($category_name as $key => $v_category_name) {
+                        $accessory_ids[] = $v_category_name->accessory_id;
+                    }
+                    
+                    $RCM_product = DB::table('tbl_product')
+                        ->whereIn('accessory_id', $accessory_ids)
+                        ->whereNotIn('product_id',$product_ids)
+                        ->get();
+                }
+                
 
         }
 

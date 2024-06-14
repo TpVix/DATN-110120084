@@ -43,12 +43,65 @@ class AdminController extends Controller
 
         $all_order = DB::table('tbl_order')
             ->join('tbl_customers', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
-            ->join('tbl_shipping', 'tbl_order.shipping_id', '=', 'tbl_shipping.shipping_id')
             ->join('tbl_payment', 'tbl_order.payment_id', '=', 'tbl_payment.payment_id')
-            ->select('tbl_order.*', 'tbl_customers.customer_name', 'tbl_shipping.*', 'tbl_payment.*')
-            ->orderBy('tbl_order.order_id', 'desc')->get();
+            ->select('tbl_order.*', 'tbl_customers.customer_name', 'tbl_payment.*')
+            ->orderBy('tbl_order.order_id', 'desc')->take(3)->get();
+     
+        $order_status_counts = DB::table('tbl_order')
+            ->select('order_status', DB::raw('count(*) as count'))
+            ->groupBy('order_status')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'order_status' => $item->order_status,
+                    'count' => $item->count
+                ];
+            });
+        $order_status_colors = [
+            'Đã nhận hàng' => '#a4d9e5',
+            'Đang chờ xử lý' => '#80e1c1',
+            'Đặt thành công, Đang giao hàng' => '#8061ef',
+            'Đã huỷ' => '#ffa128',
+        ];
 
-        return view('admin.dashboard')->with(compact('count_customer', 'daily_order', 'total', 'all_total', 'all_order'));
+
+        $order_counts_day = DB::table('tbl_order')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+
+        $selling_products = DB::table('tbl_product')
+        ->orderBy('quantity_sold', 'desc')
+        ->take(3)
+        ->get();
+
+        $potential_customer = DB::table('tbl_customers')
+        ->join('tbl_order', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
+        ->select(
+            'tbl_customers.customer_id',
+            DB::raw('count(tbl_order.order_id) as order_count'),
+            DB::raw('SUM(tbl_order.order_total) as total_order_amount')
+        )        
+        ->groupBy('tbl_customers.customer_id')
+        ->orderBy('total_order_amount','desc')
+        ->take(5)
+        ->get();
+
+        return view('admin.dashboard')
+            ->with(
+                compact(
+                    'count_customer',
+                    'daily_order',
+                    'total',
+                    'all_total',
+                    'all_order',
+                    'potential_customer',
+                    'selling_products',
+                    'order_status_counts',
+                    'order_status_colors',
+                    'order_counts_day'
+                )
+            );
     }
     public function account_profile($admin_id)
     {

@@ -153,7 +153,7 @@
                             @endphp
                             <tr>
 								<td>Ngày đặt:</td>
-								<td>{{ $history_order->created_at ? Carbon::parse($history_order->created_at)->format('d/m/Y') : 'N/A' }}</td>
+								<td>{{ $history_order->created_at ? Carbon::parse($history_order->created_at)->format('H:i d/m/Y') : 'N/A' }}</td>
 							</tr>
 						</tbody>
 

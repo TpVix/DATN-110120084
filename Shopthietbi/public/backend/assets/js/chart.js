@@ -849,51 +849,60 @@ $(document).ready(function() {
   }
 
   /*======== 11. DOUGHNUT CHART ========*/
-  var doughnut = document.getElementById("doChart");
-  if (doughnut !== null) {
+  
+var orderStatuses = window.orderStatusCounts;
+var orderStatusColors = window.orderStatusColors;
+
+// Tạo mảng labels từ thuộc tính order_status của mỗi đối tượng
+var labels = orderStatuses.map(status => status.order_status);
+var backgroundColors = labels.map(status => orderStatusColors[status]);
+// Tạo mảng data từ thuộc tính count của mỗi đối tượng
+var data = orderStatuses.map(status => status.count);
+
+// Tạo biểu đồ
+var doughnut = document.getElementById("doChart");
+
+if (doughnut !== null) {
     var myDoughnutChart = new Chart(doughnut, {
-      type: "doughnut",
-      data: {
-        labels: ["completed", "unpaid", "pending", "canceled", "returned", "Broken"],
-        datasets: [
-          {
-            label: ["completed", "unpaid", "pending", "canceled", "returned", "Broken"],
-            data: [4100, 2500, 1800, 2300, 400, 150],
-            backgroundColor: ["#88aaf3", "#50d7ab", "#9586cd", "#f3d676", "#ed9090", "#a4d9e5"],
-            borderWidth: 1
-            // borderColor: ['#88aaf3','#29cc97','#8061ef','#fec402']
-            // hoverBorderColor: ['#88aaf3', '#29cc97', '#8061ef', '#fec402']
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        legend: {
-          display: false
+        type: "doughnut",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 1
+                }
+            ]
         },
-        cutoutPercentage: 75,
-        tooltips: {
-          callbacks: {
-            title: function(tooltipItem, data) {
-              return "Order : " + data["labels"][tooltipItem[0]["index"]];
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                display: false
             },
-            label: function(tooltipItem, data) {
-              return data["datasets"][0]["data"][tooltipItem["index"]];
+            cutoutPercentage: 75,
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return data["labels"][tooltipItem[0]["index"]];
+                    },
+                    label: function(tooltipItem, data) {
+                        return data["datasets"][0]["data"][tooltipItem["index"]];
+                    }
+                },
+                titleFontColor: "#888",
+                bodyFontColor: "#555",
+                titleFontSize: 12,
+                bodyFontSize: 14,
+                backgroundColor: "rgba(256,256,256,0.95)",
+                displayColors: true,
+                borderColor: "rgba(220, 220, 220, 0.9)",
+                borderWidth: 2
             }
-          },
-          titleFontColor: "#888",
-          bodyFontColor: "#555",
-          titleFontSize: 12,
-          bodyFontSize: 14,
-          backgroundColor: "rgba(256,256,256,0.95)",
-          displayColors: true,
-          borderColor: "rgba(220, 220, 220, 0.9)",
-          borderWidth: 2
         }
-      }
     });
-  }
+}
 
   /*======== 12. POLAR CHART ========*/
   var polar = document.getElementById("polar");
@@ -1047,29 +1056,19 @@ $(document).ready(function() {
     });
   }
   /*======== 14. CURRENT USER BAR CHART ========*/
+var orderCountsday= window.orderCountsday;
+var labels = orderCountsday.map(status => status.date);
+var data = orderCountsday.map(status => status.count);
   var cUser = document.getElementById("currentUser");
   if (cUser !== null) {
     var myUChart = new Chart(cUser, {
       type: "bar",
       data: {
-        labels: [
-          "1h",
-          "10 m",
-          "50 m",
-          "30 m",
-          "40 m",
-          "20 m",
-          "30 m",
-          "25 m",
-          "20 m",
-          "5 m",
-          "10 m"
-        ],
+        labels: labels,
         datasets: [
           {
-            label: "signup",
-            data: [15, 30, 27, 43, 39, 18, 42, 25, 13, 18, 59],
-            // data: [2, 3.2, 1.8, 2.1, 1.5, 3.5, 4, 2.3, 2.9, 4.5, 1.8, 3.4, 2.8],
+            label: "Số đơn: ",
+            data: data,
             backgroundColor: "#88aaf3"
           }
         ]
@@ -1085,19 +1084,18 @@ $(document).ready(function() {
             {
               gridLines: {
                 drawBorder: true,
-                display: false,
+                display: true, // Hiển thị các đường gridline
+                color: "#eee",
+                zeroLineColor: "#eee"
               },
               ticks: {
                 fontColor: "#8a909d",
                 fontFamily: "Roboto, sans-serif",
-                display: false, // hide main x-axis line
-                beginAtZero: true,
-                callback: function(tick, index, array) {
-                  return index % 2 ? "" : tick;
-                }
+                autoSkip: false, // Tắt chế độ tự động bỏ qua
+                maxTicksLimit: 10, // Số lượng tối đa các tick trên trục x
               },
-              barPercentage: 1.8,
-              categoryPercentage: 0.2
+              barPercentage: 0.6, // Tỉ lệ chiều rộng của các cột
+              categoryPercentage: 0.8 // Tỉ lệ chiều rộng của các nhóm cột
             }
           ],
           yAxes: [
@@ -1111,13 +1109,11 @@ $(document).ready(function() {
               ticks: {
                 fontColor: "#8a909d",
                 fontFamily: "Roboto, sans-serif",
-                display: true,
                 beginAtZero: true
               }
             }
           ]
         },
-
         tooltips: {
           mode: "index",
           titleFontColor: "#888",
@@ -1143,17 +1139,17 @@ $(document).ready(function() {
       {
         first: [100, 180, 44, 75, 150, 66, 70],
         second: [144, 44, 177, 76, 23, 189, 12],
-        third: [44, 167, 102, 123, 183, 88, 134]
+        
       },
       {
         first: [144, 44, 110, 5, 123, 89, 12],
         second: [22, 123, 45, 130, 112, 54, 181],
-        third: [55, 44, 144, 75, 155, 166, 70]
+        
       },
       {
         first: [134, 80, 123, 65, 171, 33, 22],
         second: [44, 144, 77, 76, 123, 89, 112],
-        third: [156, 23, 165, 88, 112, 54, 181]
+       
       }
     ];
 
@@ -1164,7 +1160,7 @@ $(document).ready(function() {
       // The data for our dataset
       data: {
         labels: [
-          "4 Jan",
+          "3.5 Jan",
           "5 Jan",
           "6 Jan",
           "7 Jan",
@@ -1199,19 +1195,7 @@ $(document).ready(function() {
             pointBorderWidth: 2,
             pointStyle: "rectRounded"
           },
-          {
-            label: "Via Social",
-            backgroundColor: "rgb(178, 251, 212, .3)",
-            borderColor: "rgba(178, 251, 212, .7)",
-            data: acqData[0].third,
-            lineTension: 0.3,
-            pointBackgroundColor: "rgba(178, 251, 212, 0)",
-            pointHoverBackgroundColor: "rgba(178, 251, 212, 1)",
-            pointHoverRadius: 3,
-            pointHitRadius: 30,
-            pointBorderWidth: 2,
-            pointStyle: "rectRounded"
-          }
+          
         ]
       },
 
@@ -1274,31 +1258,23 @@ $(document).ready(function() {
       item.addEventListener("click", function() {
         configAcq.data.datasets[0].data = acqData[index].first;
         configAcq.data.datasets[1].data = acqData[index].second;
-        configAcq.data.datasets[2].data = acqData[index].third;
+        
         lineAcq.update();
       });
     });
   }
 
   /*======== 16. ANALYTICS - ACTIVITY CHART ========*/
+  var orderCountsday= window.orderCountsday;
+  var labels = orderCountsday.map(status => status.date);
+  var data = orderCountsday.map(status => status.count);
+
   var activity = document.getElementById("activity");
   if (activity !== null) {
     var activityData = [
       {
-        first: [0, 65, 52, 115, 98, 165, 125],
-        second: [45, 38, 100, 87, 152, 187, 85]
-      },
-      {
-        first: [0, 65, 77, 33, 49, 100, 100],
-        second: [88, 33, 20, 44, 111, 140, 77]
-      },
-      {
-        first: [0, 40, 77, 55, 33, 116, 50],
-        second: [55, 32, 20, 55, 111, 134, 66]
-      },
-      {
-        first: [0, 44, 22, 77, 33, 151, 99],
-        second: [60, 32, 120, 55, 19, 134, 88]
+        first: data,
+        
       }
     ];
 
@@ -1307,37 +1283,14 @@ $(document).ready(function() {
       type: "line",
       // The data for our dataset
       data: {
-        labels: [
-          "4 Jan",
-          "5 Jan",
-          "6 Jan",
-          "7 Jan",
-          "8 Jan",
-          "9 Jan",
-          "10 Jan"
-        ],
+        labels: labels,
         datasets: [
           {
-            label: "Active",
+            label: "Số lượng đơn hàng: ",
             backgroundColor: "transparent",
             borderColor: "rgba(82, 136, 255, .8)",
             data: activityData[0].first,
             lineTension: 0,
-            pointRadius: 5,
-            pointBackgroundColor: "rgba(255,255,255,1)",
-            pointHoverBackgroundColor: "rgba(255,255,255,1)",
-            pointBorderWidth: 2,
-            pointHoverRadius: 7,
-            pointHoverBorderWidth: 1
-          },
-          {
-            label: "Inactive",
-            backgroundColor: "transparent",
-            borderColor: "rgba(255, 199, 15, .8)",
-            data: activityData[0].second,
-            lineTension: 0,
-            borderDash: [10, 5],
-            borderWidth: 1,
             pointRadius: 5,
             pointBackgroundColor: "rgba(255,255,255,1)",
             pointHoverBackgroundColor: "rgba(255,255,255,1)",
@@ -1358,7 +1311,7 @@ $(document).ready(function() {
           xAxes: [
             {
               gridLines: {
-                display: false,
+                display: true,
               },
               ticks: {
                 fontColor: "#8a909d", // this here
@@ -1411,7 +1364,7 @@ $(document).ready(function() {
     items.forEach(function(item, index){
       item.addEventListener("click", function() {
         config.data.datasets[0].data = activityData[index].first;
-        config.data.datasets[1].data = activityData[index].second;
+        
         myLine.update();
       });
     });

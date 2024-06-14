@@ -45,7 +45,7 @@ class OrderController extends Controller
     }
     public function acept_order($order_id){
         DB::table('tbl_order')->where('order_id', $order_id)->update(['order_status' => 'Đặt thành công, Đang giao hàng']);
-        Session::put('message','Đặt thành công, Đang giao hàng');
+        Session::put('acept_order','Đặt thành công, Đang giao hàng');
         return Redirect()->back();
     }
     public function delete_order($order_id){

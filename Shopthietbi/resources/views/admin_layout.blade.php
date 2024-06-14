@@ -41,7 +41,7 @@
 			<div id="sidebar" class="sidebar ec-sidebar-footer">
 
 				<div class="ec-brand">
-					<a href="index.html" title="Ekka">
+					<a href="{{url('/dashboard')}}" title="Ekka">
 						<img class="ec-brand-icon" src="{{asset('public/backend/assets/img/logo/ec-site-logo.png')}}" alt="" />
 						<span class="ec-brand-name text-truncate">Ekka</span>
 					</a>
