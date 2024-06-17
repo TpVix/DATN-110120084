@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 //Frontend
 Route::get('/', 'HomeController@index');
+Route::get('/contact-us', 'HomeController@contact_us');
 Route::get('/trang_chu', 'HomeController@index');
 Route::get('/tim-kiem/{search}', 'HomeController@search');
 Route::get('/rating', 'HomeController@rating');

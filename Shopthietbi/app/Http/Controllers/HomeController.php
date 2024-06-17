@@ -20,7 +20,7 @@ class HomeController extends Controller
         $seven_days_ago = Carbon::now()->subDays(7);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $new_product = DB::table('tbl_product')
             ->whereBetween('created_at', [$seven_days_ago, Carbon::now()])
@@ -52,11 +52,11 @@ class HomeController extends Controller
             foreach ($category_with_product_ids as $key => $v_category_with_product_ids) {
                 $category_ids[] = $v_category_with_product_ids->category_id;
             }
-            
-            
+        
             $category_name = DB::table('tbl_category_product')
                 ->whereIn('category_id', $category_ids)
                 ->get();
+                
                 if ($category_name == '[]') {
                     $accessory_by_category=[];
                     foreach ($category_with_product_ids as $key => $accessory_category_with_product_ids) {
@@ -64,20 +64,60 @@ class HomeController extends Controller
     
                     }
                     
+                    $accessory_status = DB::table('tbl_accessory')
+                    ->where('accessory_status','Hiện')
+                    ->whereIn('accessory_id',$accessory_by_category)
+                    ->get();
+                    $accessory_by_status=[];
+                    foreach ($accessory_status as $key => $v_accessory_status) {
+                        $accessory_by_status[]=$v_accessory_status->accessory_id;
+    
+                    }
+                   
                     $RCM_product = DB::table('tbl_product')
-                    ->whereIn('accessory_id', $accessory_by_category)
+                    ->whereIn('accessory_id', $accessory_by_status)
                     ->whereNotIn('product_id',$product_ids)
                     ->get();
-
+                   
                     
                 } else {
+
+                    $accessory_by_category=[];
+                    foreach ($category_with_product_ids as $key => $accessory_category_with_product_ids) {
+                        $accessory_by_category[]=$accessory_category_with_product_ids->accessory_id;
+    
+                    }
+                    
+                    $accessory_status = DB::table('tbl_accessory')
+                    ->where('accessory_status','Hiện')
+                    ->whereIn('accessory_id',$accessory_by_category)
+                    ->get();
+                    $accessory_by_status=[];
+                    foreach ($accessory_status as $key => $v_accessory_status) {
+                        $accessory_by_status[]=$v_accessory_status->accessory_id;
+    
+                    }
+                    
                     $accessory_ids = [];
                     foreach ($category_name as $key => $v_category_name) {
                         $accessory_ids[] = $v_category_name->accessory_id;
                     }
+                    $accessory_product_status = DB::table('tbl_accessory')
+                    ->where('accessory_status','Hiện')
+                    ->whereIn('accessory_id',$accessory_ids)
+                    ->get();
                     
+                    $accessory_product_by_status=[];
+                    foreach ($accessory_product_status as $key => $v_accessory_product_status) {
+                        $accessory_product_by_status[]=$v_accessory_product_status->accessory_id;
+    
+                    }
+                    $accessory_merge = array_unique(array_merge($accessory_by_status, $accessory_product_by_status));
+
+                    
+
                     $RCM_product = DB::table('tbl_product')
-                        ->whereIn('accessory_id', $accessory_ids)
+                        ->whereIn('accessory_id', $accessory_merge)
                         ->whereNotIn('product_id',$product_ids)
                         ->get();
                 }
@@ -89,6 +129,7 @@ class HomeController extends Controller
 
         $selling_products = DB::table('tbl_product')
             ->orderBy('quantity_sold', 'desc')
+            ->where('quantity_sold', '>', 0)
             ->take(10)
             ->get();
 
@@ -121,6 +162,14 @@ class HomeController extends Controller
 
 
     }
+    public function contact_us()
+    {
+        $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
+        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
+        $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
+        return view('pages.contact_us')->with(compact('cart_detail','category','all_accessory','brand'));
+    }
     public function show_product_category($category_slug, Request $request)
     {
         Session::put('low_to_high_accessory', null);
@@ -136,7 +185,7 @@ class HomeController extends Controller
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
 
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
 
@@ -224,7 +273,7 @@ class HomeController extends Controller
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
 
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
 
@@ -308,7 +357,7 @@ class HomeController extends Controller
         Session::put('max_price', $max_price);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
 
 
@@ -377,7 +426,7 @@ class HomeController extends Controller
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
         $product_detail = DB::table('tbl_product')
             ->leftjoin('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
@@ -493,7 +542,7 @@ class HomeController extends Controller
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $customer = Customer::where('customer_id', $customer_id)->first();
         return view('pages.customer.my_account')
@@ -529,7 +578,7 @@ class HomeController extends Controller
 
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $address = DB::table('tbl_address')
             ->join('tbl_tinhthanhpho', 'tbl_tinhthanhpho.matp', '=', 'tbl_address.matp')
@@ -555,9 +604,9 @@ class HomeController extends Controller
         Session::put('max_price', $max_price);
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
 
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
 
         $filter_price = DB::table('tbl_product')
@@ -582,7 +631,7 @@ class HomeController extends Controller
         $searched = $request->searched;
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
 
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         Session::put('searched', $searched);

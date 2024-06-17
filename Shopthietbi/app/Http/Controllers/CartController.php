@@ -39,7 +39,7 @@ class CartController extends Controller
     public function show_cart()
     {
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
         return view('pages.cart.show_cart')
@@ -51,7 +51,7 @@ class CartController extends Controller
     public function delete_cart($product_id)
     {
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         DB::table('tbl_cart_detail')
             ->where('product_id', $product_id)

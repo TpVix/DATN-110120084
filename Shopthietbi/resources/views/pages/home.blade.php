@@ -175,21 +175,32 @@
                             @if ($v_selling_products->promotion_id != 0)
                                     @php
                                         $active_promotion_selling = DB::table('tbl_promotion')
-                                            ->where('promotion_status', 'Có')
+                                           
                                             ->where('promotion_id', $v_selling_products->promotion_id)
                                             ->get();
                                     @endphp
                                     <div class="price-box">
-                                        <del class="old-price">{{ number_format($v_selling_products->product_price) }}</del><br>
-                                        @foreach ($active_promotion_selling as $v_active_promotion)
+                                       
+                                    @foreach ($active_promotion_selling as $v_active_promotion)
+                                        
+                                        @if ($v_active_promotion->promotion_status == 'Có')
                                             @if ($v_active_promotion->promotion_option == '%')
-                                                <span style="color:red;"
-                                                    class="product-price">{{ number_format(($v_selling_products->product_price * (100 - $v_active_promotion->promotion_price)) / 100) . ' ' . 'VNĐ' }}</span>
+                                            <del class="old-price">{{ number_format($v_selling_products->product_price) }}</del><br>
+                                            <span style="color:red;"
+                                                class="product-price">{{ number_format(($v_selling_products->product_price * (100 - $v_active_promotion->promotion_price)) / 100) . ' ' . 'VNĐ' }}</span>
                                             @else
+                                            <del class="old-price">{{ number_format($v_selling_products->product_price) }}</del><br>
                                                 <span style="color:red;"
                                                     class="product-price">{{ number_format($v_selling_products->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
                                             @endif
-                                        @endforeach
+                                        @else
+                                        
+                                            <del class="old-price"></del><br>
+                                            <span style="color:red;"
+                                                class="product-price">{{ number_format($v_selling_products->product_price) . ' ' . 'VNĐ' }}</span>
+                                        
+                                        @endif
+                                    @endforeach  
                                     </div>
                                 @else
                                     <div class="price-box">
@@ -216,19 +227,24 @@
                                     @if ($v_selling_products->promotion_id != 0)
                                     @php
                                         $active_promotion_selling = DB::table('tbl_promotion')
-                                            ->where('promotion_status', 'Có')
                                             ->where('promotion_id', $v_selling_products->promotion_id)
                                             ->get();
                                     @endphp
                                         @foreach ($active_promotion_selling as $v_active_promotion)
-                                            @if ($v_active_promotion->promotion_option == '%')
-                                                <input type="hidden" name="cart_product_price"
-                                                    value="{{ ($v_selling_products->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
-                                                    class="cart_product_price_{{ $v_selling_products->product_id }}">
+                                            @if ($v_active_promotion->promotion_status == 'Có')
+                                                @if ($v_active_promotion->promotion_option == '%')
+                                                    <input type="hidden" name="cart_product_price"
+                                                        value="{{ ($v_selling_products->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
+                                                        class="cart_product_price_{{ $v_selling_products->product_id }}">
+                                                @else
+                                                    <input type="hidden" name="cart_product_price"
+                                                        value="{{ $v_selling_products->product_price - $v_active_promotion->promotion_price }}"
+                                                        class="cart_product_price_{{ $v_selling_products->product_id }}">
+                                                @endif
                                             @else
                                                 <input type="hidden" name="cart_product_price"
-                                                    value="{{ $v_selling_products->product_price - $v_active_promotion->promotion_price }}"
-                                                    class="cart_product_price_{{ $v_selling_products->product_id }}">
+                                                value="{{ $v_selling_products->product_price }}"
+                                                class="cart_product_price_{{ $v_selling_products->product_id }}">
                                             @endif
                                         @endforeach
                                     @else
@@ -300,9 +316,7 @@
 
                             </figure>
                             <div class="product-details">
-                                <div class="category-list">
-                                    <a href="category.html" class="product-category">Category</a>
-                                </div>
+                               
                                 <h3 class="product-title">
                                     <a href="product.html">{{ $new_product->product_name }}</a>
                                 </h3>
@@ -360,19 +374,29 @@
                                 @if ($new_product->promotion_id != 0)
                                     @php
                                         $active_promotion_new = DB::table('tbl_promotion')
-                                            ->where('promotion_status', 'Có')
+                                            
                                             ->where('promotion_id', $new_product->promotion_id)
                                             ->get();
                                     @endphp
                                     <div class="price-box">
-                                        <del class="old-price">{{ number_format($new_product->product_price) }}</del><br>
+                                        
                                         @foreach ($active_promotion_new as $v_active_promotion)
-                                            @if ($v_active_promotion->promotion_option == '%')
+                                        
+                                            @if ($v_active_promotion->promotion_status == 'Có')
+                                                @if ($v_active_promotion->promotion_option == '%')
+                                                <del class="old-price">{{ number_format($new_product->product_price) }}</del><br>
                                                 <span style="color:red;"
                                                     class="product-price">{{ number_format(($new_product->product_price * (100 - $v_active_promotion->promotion_price)) / 100) . ' ' . 'VNĐ' }}</span>
+                                                @else
+                                                <del class="old-price">{{ number_format($new_product->product_price) }}</del><br>
+                                                    <span style="color:red;"
+                                                        class="product-price">{{ number_format($new_product->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
+                                                @endif
                                             @else
-                                                <span style="color:red;"
-                                                    class="product-price">{{ number_format($new_product->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
+                                                    <del class="old-price"></del><br>
+                                                    <span style="color:red;"
+                                                        class="product-price">{{ number_format($new_product->product_price) . ' ' . 'VNĐ' }}</span>
+                                            
                                             @endif
                                         @endforeach
                                     </div>
@@ -403,19 +427,24 @@
                                         @if ($new_product->promotion_id != 0)
                                         @php
                                             $active_promotion_new = DB::table('tbl_promotion')
-                                                ->where('promotion_status', 'Có')
                                                 ->where('promotion_id', $new_product->promotion_id)
                                                 ->get();
                                         @endphp
                                             @foreach ($active_promotion_new as $v_active_promotion)
-                                                @if ($v_active_promotion->promotion_option == '%')
-                                                    <input type="hidden" name="cart_product_price"
-                                                        value="{{ ($new_product->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
-                                                        class="cart_product_price_{{ $new_product->product_id }}">
+                                                @if ($v_active_promotion->promotion_status == 'Có')
+                                                    @if ($v_active_promotion->promotion_option == '%')
+                                                        <input type="hidden" name="cart_product_price"
+                                                            value="{{ ($new_product->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
+                                                            class="cart_product_price_{{ $new_product->product_id }}">
+                                                    @else
+                                                        <input type="hidden" name="cart_product_price"
+                                                            value="{{ $new_product->product_price - $v_active_promotion->promotion_price }}"
+                                                            class="cart_product_price_{{ $new_product->product_id }}">
+                                                    @endif
                                                 @else
                                                     <input type="hidden" name="cart_product_price"
-                                                        value="{{ $new_product->product_price - $v_active_promotion->promotion_price }}"
-                                                        class="cart_product_price_{{ $new_product->product_id }}">
+                                                    value="{{ $new_product->product_price }}"
+                                                    class="cart_product_price_{{ $new_product->product_id }}">
                                                 @endif
                                             @endforeach
                                         @else
@@ -493,9 +522,7 @@
 
                                     </figure>
                                     <div class="product-details">
-                                        <div class="category-list">
-                                            <a href="category.html" class="product-category">Category</a>
-                                        </div>
+                                        
                                         <h3 class="product-title">
                                             <a href="product.html">{{ $v_product_promotion->product_name }}</a>
                                         </h3>
@@ -671,9 +698,7 @@
 
                                 </figure>
                                 <div class="product-details">
-                                    <div class="category-list">
-                                        <a href="category.html" class="product-category">Category</a>
-                                    </div>
+                                    
                                     <h3 class="product-title">
                                         <a href="product.html">{{ $v_RCM_product->product_name }}</a>
                                     </h3>
@@ -729,19 +754,30 @@
                                     @if ($v_RCM_product->promotion_id != 0)
                                     @php
                                         $active_promotion_rcm = DB::table('tbl_promotion')
-                                            ->where('promotion_status', 'Có')
+                                           
                                             ->where('promotion_id', $v_RCM_product->promotion_id)
                                             ->get();
                                     @endphp
                                     <div class="price-box">
-                                        <del class="old-price">{{ number_format($v_RCM_product->product_price) }}</del><br>
                                         @foreach ($active_promotion_rcm as $v_active_promotion)
-                                            @if ($v_active_promotion->promotion_option == '%')
+                                        
+                                            @if ($v_active_promotion->promotion_status == 'Có')
+                                                @if ($v_active_promotion->promotion_option == '%')
+                                                <del class="old-price">{{ number_format($v_RCM_product->product_price) }}</del><br>
                                                 <span style="color:red;"
                                                     class="product-price">{{ number_format(($v_RCM_product->product_price * (100 - $v_active_promotion->promotion_price)) / 100) . ' ' . 'VNĐ' }}</span>
+                                                @else
+                                                <del class="old-price">{{ number_format($v_RCM_product->product_price) }}</del><br>
+                                                    <span style="color:red;"
+                                                        class="product-price">{{ number_format($v_RCM_product->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
+                                                @endif
                                             @else
-                                                <span style="color:red;"
-                                                    class="product-price">{{ number_format($v_RCM_product->product_price - $v_active_promotion->promotion_price) . ' ' . 'VNĐ' }}</span>
+                                            
+                                                
+                                                    <del class="old-price"></del><br>
+                                                    <span style="color:red;"
+                                                        class="product-price">{{ number_format($v_RCM_product->product_price) . ' ' . 'VNĐ' }}</span>
+                                               
                                             @endif
                                         @endforeach
                                     </div>
@@ -773,19 +809,24 @@
                                                 @if ($v_RCM_product->promotion_id != 0)
                                                 @php
                                                     $active_promotion_rcm = DB::table('tbl_promotion')
-                                                        ->where('promotion_status', 'Có')
                                                         ->where('promotion_id', $v_RCM_product->promotion_id)
                                                         ->get();
                                                 @endphp
                                                     @foreach ($active_promotion_rcm as $v_active_promotion)
-                                                        @if ($v_active_promotion->promotion_option == '%')
-                                                            <input type="hidden" name="cart_product_price"
-                                                                value="{{ ($v_RCM_product->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
-                                                                class="cart_product_price_{{ $v_RCM_product->product_id }}">
+                                                        @if ($v_active_promotion->promotion_status == 'Có')
+                                                            @if ($v_active_promotion->promotion_option == '%')
+                                                                <input type="hidden" name="cart_product_price"
+                                                                    value="{{ ($v_RCM_product->product_price * (100 - $v_active_promotion->promotion_price)) / 100 }}"
+                                                                    class="cart_product_price_{{ $v_RCM_product->product_id }}">
+                                                            @else
+                                                                <input type="hidden" name="cart_product_price"
+                                                                    value="{{ $v_RCM_product->product_price - $v_active_promotion->promotion_price }}"
+                                                                    class="cart_product_price_{{ $v_RCM_product->product_id }}">
+                                                            @endif
                                                         @else
                                                             <input type="hidden" name="cart_product_price"
-                                                                value="{{ $v_RCM_product->product_price - $v_active_promotion->promotion_price }}"
-                                                                class="cart_product_price_{{ $v_RCM_product->product_id }}">
+                                                            value="{{ $v_RCM_product->product_price }}"
+                                                            class="cart_product_price_{{ $v_RCM_product->product_id }}">
                                                         @endif
                                                     @endforeach
                                                 @else

@@ -316,7 +316,7 @@
                                 </ul>
                             </li>
                             
-                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="{{url('/contact-us')}}">Liên hệ</a></li>
                             </ul>
                     </nav>
                 </div>
@@ -335,20 +335,20 @@
                     <div class="row">
                         <div class="col-lg-3 col-sm-6">
                             <div class="widget">
-                                <h4 class="widget-title">Contact Info</h4>
+                                <h4 class="widget-title">Thông Tin Liên Hệ</h4>
                                 <ul class="contact-info">
                                     <li>
-                                        <span class="contact-info-label">Address:</span>123 Street Name, City, England
+                                        <span class="contact-info-label">Địa chỉ:</span>Trà Vinh
                                     </li>
                                     <li>
-                                        <span class="contact-info-label">Phone:</span><a href="tel:">(123)
-											456-7890</a>
+                                        <span class="contact-info-label">SĐT:</span><a href="tel:">(+84) 8634-68532</a>
                                     </li>
                                     <li>
-                                        <span class="contact-info-label">Email:</span> <a href="https://portotheme.com/cdn-cgi/l/email-protection#6d000c04012d08150c001d0108430e0200"><span class="__cf_email__" data-cfemail="6c010d05002c09140d011c0009420f0301">[email&#160;protected]</span></a>
+                                        <span class="contact-info-label">Email:</span> <a
+                                            href="https://portotheme.com/cdn-cgi/l/email-protection#6d000c04012d08150c001d0108430e0200">vitran641@gmail.com</a>
                                     </li>
                                     <li>
-                                        <span class="contact-info-label">Working Days/Hours:</span> Mon - Sun / 9:00 AM - 8:00 PM
+                                        <span class="contact-info-label">Thời gian làm việc/Giờ:</span> T2 - CN / 8:00AM - 5:00PM
                                     </li>
                                 </ul>
                                 <div class="social-icons">
@@ -361,7 +361,7 @@
                             <!-- End .widget -->
                         </div>
                         <!-- End .col-lg-3 -->
-
+{{-- 
                         <div class="col-lg-3 col-sm-6">
                             <div class="widget">
                                 <h4 class="widget-title">Customer Service</h4>
@@ -417,7 +417,7 @@
                                 </form>
                             </div>
                             <!-- End .widget -->
-                        </div>
+                        </div> --}}
                         <!-- End .col-lg-3 -->
                     </div>
                     <!-- End .row -->
@@ -430,7 +430,7 @@
                 <div class="footer-bottom">
                     <div class="container d-sm-flex align-items-center">
                         <div class="footer-left">
-                            <span class="footer-copyright">© Porto eCommerce. 2021. All Rights Reserved</span>
+                           
                         </div>
 
                         <div class="footer-right ml-auto mt-1 mt-sm-0">
@@ -682,7 +682,9 @@
     <script src="{{asset('public/frontend/assets/js/jquery.appear.min.js')}}"></script>
     <script src="{{asset('public/frontend/assets/js/sweetalert.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-    
+    <script src="{{ asset('public/frontend/assets/js/map.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgE-0rcnwd-H2jkwj9svQ_ogC_Rztr5GQ"></script>
+
 
     <!-- Main JS File -->
     <script src="{{asset('public/frontend/assets/js/main.min.js')}}"></script>

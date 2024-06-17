@@ -20,7 +20,7 @@ class CheckoutController extends Controller
     public function checkout()
     {
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
         $customer_id = Session::get('customer_id');
         $address = DB::table('tbl_address')
