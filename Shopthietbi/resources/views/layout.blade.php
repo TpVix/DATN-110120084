@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Porto - Bootstrap eCommerce Template</title>
+    <title>Shop thiết bị</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
@@ -69,7 +69,6 @@
 									if($customer_id == null){
 								?>
 
-                                    <li><a href="{{URL::to('/login-register')}}" ><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</a></li>
 									<?php
 								}else {
 								?>
@@ -85,11 +84,7 @@
                         <!-- End .header-dropown -->
 
 
-                        <div class="social-icons">
-                            <a href="#" class="social-icon social-facebook icon-facebook" target="_blank"></a>
-                            <a href="#" class="social-icon social-gplus icon-gplus" target="_blank"><i class="fab fa-google-plus-g"></i></a>
-                           
-                        </div>
+                        
                         <!-- End .social-icons -->
                     </div>
                     <!-- End .header-right -->
@@ -100,7 +95,7 @@
 
             <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}">
                 <div class="container">
-                    <div class="header-left col-lg-2 w-auto pl-0">
+                    <div class="header-left col-lg-2 w-auto pl-0" style="height:44px;">
                         <button class="mobile-menu-toggler text-primary mr-2" type="button">
 							<i class="fas fa-bars"></i>
 						</button>
@@ -133,7 +128,7 @@
 							$customer_name = Session::get('customer_name');
 							if($customer_id == null){
 						?>
-						<a href="#" class="header-icon" ><i class="icon-user-2"></i>Unknown</a>
+						<a href="{{URL::to('/login-register')}}" class="header-icon" ><i class="icon-user-2"></i>Đăng nhập</a>
 						  
 						<?php
 						}else {
@@ -309,8 +304,8 @@
                             <li>
                                 <a href="#">Thương hiệu</a>
                                 <ul>
-									@foreach ($brand as $key => $brand)
-                                    <li><a href="{{URL::to('/thuong-hieu/'.$brand-> brand_slug)}}">{{($brand -> brand_name)}}</a></li>
+									@foreach ($brand as $key => $brand1)
+                                    <li><a href="{{URL::to('/thuong-hieu/'.$brand1-> brand_slug)}}">{{($brand1 -> brand_name)}}</a></li>
 									@endforeach
 
                                 </ul>
@@ -361,22 +356,16 @@
                             <!-- End .widget -->
                         </div>
                         <!-- End .col-lg-3 -->
-{{-- 
+
                         <div class="col-lg-3 col-sm-6">
                             <div class="widget">
-                                <h4 class="widget-title">Customer Service</h4>
+                                <h4 class="widget-title">Danh mục</h4>
 
                                 <ul class="links">
-                                    <li><a href="#">Help & FAQs</a></li>
-                                    <li><a href="#">Order Tracking</a></li>
-                                    <li><a href="#">Shipping & Delivery</a></li>
-                                    <li><a href="#">Orders History</a></li>
-                                    <li><a href="#">Advanced Search</a></li>
-                                    <li><a href="dashboard.html">My Account</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="#">Corporate Sales</a></li>
-                                    <li><a href="#">Privacy</a></li>
+                                    @foreach ($category as $key => $category1)
+
+                                    <li><a href="{{url('/danh-muc/'.$category1->category_slug)}}">{{$category1->category_name}}</a></li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <!-- End .widget -->
@@ -385,20 +374,12 @@
 
                         <div class="col-lg-3 col-sm-6">
                             <div class="widget">
-                                <h4 class="widget-title">Popular Tags</h4>
+                                <h4 class="widget-title">Thương hiệu</h4>
 
                                 <div class="tagcloud">
-                                    <a href="#">Bag</a>
-                                    <a href="#">Black</a>
-                                    <a href="#">Blue</a>
-                                    <a href="#">Clothes</a>
-                                    <a href="#">Fashion</a>
-                                    <a href="#">Hub</a>
-                                    <a href="#">Shirt</a>
-                                    <a href="#">Shoes</a>
-                                    <a href="#">Skirt</a>
-                                    <a href="#">Sports</a>
-                                    <a href="#">Sweater</a>
+                                    @foreach ($brand as $key => $brand1)
+                                    <a href="{{url('/thuong-hieu/'.$brand1->brand_slug)}}">{{$brand1->brand_name}}</a>
+                                    @endforeach
                                 </div>
                             </div>
                             <!-- End .widget -->
@@ -407,17 +388,15 @@
 
                         <div class="col-lg-3 col-sm-6">
                             <div class="widget widget-newsletter">
-                                <h4 class="widget-title">Subscribe newsletter</h4>
-                                <p>Get all the latest information on events, sales and offers. Sign up for newsletter:
-                                </p>
+                                <h4 class="widget-title">Map</h4>
+                                
                                 <form action="#" class="mb-0">
-                                    <input type="email" class="form-control m-b-3" placeholder="Email address" required>
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d982.1117142967026!2d106.34198125586!3d9.935295279006121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a017543aee1d03%3A0xd4993464099847f5!2zQ2jhu6MgVHLDoCBWaW5oLCBQaMaw4budbmcgMywgVHLDoCBWaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1718648450885!5m2!1svi!2s" style="border:0; width:100%;height:100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-                                    <input type="submit" class="btn btn-primary shadow-none" value="Subscribe">
                                 </form>
                             </div>
                             <!-- End .widget -->
-                        </div> --}}
+                        </div>
                         <!-- End .col-lg-3 -->
                     </div>
                     <!-- End .row -->
@@ -459,7 +438,7 @@
         </div>
     </div>
 
-    <div class="mobile-menu-overlay"></div>
+    {{-- <div class="mobile-menu-overlay"></div>
     <!-- End .mobil-menu-overlay -->
 
     <div class="mobile-menu-container">
@@ -638,7 +617,7 @@
 				</i>Cart
             </a>
         </div>
-    </div>
+    </div> --}}
 
     <!-- <div class="newsletter-popup mfp-hide bg-img" id="newsletter-popup-form" style="background: #f1f1f1 no-repeat center/cover url({{asset('public/frontend/assets/images/newsletter_popup_bg.jpg')}})">
         <div class="newsletter-popup-content">

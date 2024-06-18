@@ -209,7 +209,7 @@ class CustomerController extends Controller
                     'customer_email' => $users->email,
                     'address_id' => null,
                     'customer_password' => '',
-                    'customer_phone' => ''
+                    
 
                 ]);
             }

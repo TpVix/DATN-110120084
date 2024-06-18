@@ -5,14 +5,12 @@
         <div class="container checkout-container">
             <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
                 <li>
-                    <a href="{{ URL::to('/show-cart') }}">Shopping Cart</a>
+                    <a href="{{ URL::to('/show-cart') }}">Giỏ hàng</a>
                 </li>
                 <li class="active">
-                    <a href="{{ URL::to('/checkout') }}">Checkout</a>
+                    <a href="{{ URL::to('/checkout') }}">Thanh toán</a>
                 </li>
-                <li class="disabled">
-                    <a href="#">Order Complete</a>
-                </li>
+                
             </ul>
 
             <form id="form_normal">

@@ -11,7 +11,7 @@ $(document).ready(function () {
           <div class="slim-scroll-right-sidebar-2">
 
             <div class="right-sidebar-2-header">
-              <h2>SETTINGS</h2>
+              <h2>CÀI ĐẶT</h2>
               <p>Layout Preview Settings</p>
               <div class="btn-close-right-sidebar-2">
                 <i class="mdi mdi-window-close"></i>
@@ -19,44 +19,23 @@ $(document).ready(function () {
             </div>
 
             <div class="right-sidebar-2-body" data-simplebar>
-              <span class="right-sidebar-2-subtitle">Header Layout</span>
-              <div class="no-col-space">
-                <a href="javascript:void(0);" class="btn-right-sidebar-2 ec-header-fixed-to btn-right-sidebar-2-active">Fixed</a>
-                <a href="javascript:void(0);" class="btn-right-sidebar-2 ec-header-static-to">Static</a>
-              </div>
+              
 
-              <span class="right-sidebar-2-subtitle">Sidebar Layout</span>
-              <div class="no-col-space">
-                <select class="right-sidebar-2-select" id="sidebar-option-select">
-                  <option value="ec-sidebar-fixed">Fixed Default</option>
-                  <option value="ec-sidebar-fixed-minified">Fixed Minified</option>
-                  <option value="ec-sidebar-fixed-offcanvas">Fixed Offcanvas</option>
-                  <option value="ec-sidebar-static">Static Default</option>
-                  <option value="ec-sidebar-static-minified">Static Minified</option>
-                  <option value="ec-sidebar-static-offcanvas">Static Offcanvas</option>
-                </select>
-              </div>
-
-              <span class="right-sidebar-2-subtitle">Header Background</span>
+              <span class="right-sidebar-2-subtitle">Nền tiêu đề</span>
               <div class="no-col-space">
                 <a href="javascript:void(0);" class="btn-right-sidebar-2 btn-right-sidebar-2-active ec-header-light-to">Light</a>
                 <a href="javascript:void(0);" class="btn-right-sidebar-2 ec-header-dark-to">Dark</a>
               </div>
 
-              <span class="right-sidebar-2-subtitle">Navigation Background</span>
+              <span class="right-sidebar-2-subtitle">Nền điều hướng</span>
               <div class="no-col-space">
                 <a href="javascript:void(0);" class="btn-right-sidebar-2 btn-right-sidebar-2-active ec-sidebar-light-to">Light</a>
                 <a href="javascript:void(0);" class="btn-right-sidebar-2 ec-sidebar-dark-to">Dark</a>
               </div>
 
-              <span class="right-sidebar-2-subtitle">Spacing Layout</span>
-              <div class="no-col-space">
-                <a href="javascript:void(0);" class="btn-right-sidebar-2 btn-right-sidebar-2-active default-spacing-to">Default</a>
-                <a href="javascript:void(0);" class="btn-right-sidebar-2 compact-spacing-to">Compact</a>
-              </div>
+              
               <div class="d-flex justify-content-center">
-                <div id="reset-options" style="width: auto; cursor: pointer" class="btn-right-sidebar-2 btn-reset">Reset
-                  Settings</div>
+                <div id="reset-options" style="width: auto; cursor: pointer" class="btn-right-sidebar-2 btn-reset">Đặt lại cài đặt</div>
               </div>
             </div>
           </div>

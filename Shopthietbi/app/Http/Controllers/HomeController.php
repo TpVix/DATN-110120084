@@ -503,7 +503,6 @@ class HomeController extends Controller
             $data['customer_name'] = $request->register_name;
             $data['customer_email'] = $request->register_email;
             $data['customer_password'] = md5($request->register_password);
-            $data['customer_phone'] = $request->register_phone;
 
             $customer_id = Customer::insertGetId($data);
             Session::put('customer_id', $customer_id);

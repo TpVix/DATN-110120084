@@ -1067,7 +1067,7 @@ var data = orderCountsday.map(status => status.count);
         labels: labels,
         datasets: [
           {
-            label: "Số đơn: ",
+            label: "Số đơn",
             data: data,
             backgroundColor: "#88aaf3"
           }

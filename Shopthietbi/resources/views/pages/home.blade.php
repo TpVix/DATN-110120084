@@ -36,8 +36,8 @@
                     <i class="icon-shipping"></i>
 
                     <div class="info-box-content">
-                        <h4>FREE SHIPPING &amp; RETURN</h4>
-                        <p class="text-body">Free shipping on all orders over $99.</p>
+                        <h4>SHIP NHANH CHÓNG</h4>
+                        <p class="text-body">Vận chuyển nhanh chóng</p>
                     </div>
                     <!-- End .info-box-content -->
                 </div>
@@ -47,8 +47,8 @@
                     <i class="icon-money"></i>
 
                     <div class="info-box-content">
-                        <h4>MONEY BACK GUARANTEE</h4>
-                        <p class="text-body">100% money back guarantee</p>
+                        <h4>AN TOÀN KHI THANH TOÁN</h4>
+                        <p class="text-body">Thanh toán online an toàn</p>
                     </div>
                     <!-- End .info-box-content -->
                 </div>
@@ -58,8 +58,8 @@
                     <i class="icon-support"></i>
 
                     <div class="info-box-content">
-                        <h4>ONLINE SUPPORT 24/7</h4>
-                        <p class="text-body">Lorem ipsum dolor sit amet.</p>
+                        <h4>HỖ TRỢ</h4>
+                        <p class="text-body">Thông qua chatbot</p>
                     </div>
                     <!-- End .info-box-content -->
                 </div>

@@ -28,7 +28,7 @@
                             <table id="" class="table table_data">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left;!important">Profile</th>
+                                        <th style="text-align: left;!important"></th>
                                         <th>Tên</th>
                                         <th style="text-align: left;!important">Số điện thoại</th>
                                         <th>Quyền</th>

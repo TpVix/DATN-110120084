@@ -36,9 +36,13 @@ class AdminController extends Controller
     {
         $this->AuthLogin();
         $count_customer = DB::table('tbl_customers')->count();
-        $daily_order = DB::table('tbl_order')->whereDate('created_at', Carbon::today())->count();
-        $total = DB::table('tbl_order')->whereDate('created_at', Carbon::today())->sum('order_total');
-
+        $daily_order = DB::table('tbl_order')
+        ->whereRaw('DATE(created_at) = CURDATE()')
+        ->count();
+        
+        $total = DB::table('tbl_order')
+        ->whereRaw('DATE(created_at) = CURDATE()')
+        ->sum('order_total');
         $all_total = DB::table('tbl_order')->sum('order_total');
 
         $all_order = DB::table('tbl_order')
@@ -195,6 +199,7 @@ class AdminController extends Controller
     }
     public function list_account()
     {
+        $this->AuthLogin();
 
         $admin_admin_role = DB::table('tbl_admin')
             ->join('tbl_role', 'tbl_admin.role_id', '=', 'tbl_role.role_id')
@@ -203,6 +208,23 @@ class AdminController extends Controller
 
         $all_role = DB::table('tbl_role')->orderBy('role_id', 'asc')->get();
         return view('admin.account.list_add_account')->with(compact('admin_admin_role', 'all_role'));
+    }
+    public function list_customer()
+    {
+        $this->AuthLogin();
+
+        $customer_all = DB::table('tbl_customers')
+        ->join('tbl_order', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
+        ->select(
+            'tbl_customers.customer_id',
+            DB::raw('count(tbl_order.order_id) as order_count'),
+            DB::raw('SUM(tbl_order.order_total) as total_order_amount')
+        )        
+        ->groupBy('tbl_customers.customer_id')
+        ->orderBy('total_order_amount','desc')
+        ->get();
+
+        return view('admin.customer.list_add_customer')->with(compact('customer_all'));
     }
     public function permisstion($role_id, Request $request)
     {

@@ -87,7 +87,7 @@ Route::post('/check_adminlogin', 'AdminController@check_adminlogin');
 //Account
 Route::group(['middleware' => ['auth:admin', 'checkAdminRole:Quản trị viên,Quản lý']], function () {
     Route::get('/list-account', 'AdminController@list_account');
-   
+    Route::get('/list-customer', 'AdminController@list_customer');
 });
 Route::get('/account-profile/{admin_id}', 'AdminController@account_profile');
 Route::post('/update-profile/{admin_id}', 'AdminController@update_profile');

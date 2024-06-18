@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content="Ekka - Admin Dashboard HTML Template.">
 
-		<title>Ekka - Admin Dashboard HTML Template.</title>
+		<title>Trang Admin</title>
 		
 		<!-- GOOGLE FONTS -->
 		<link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -34,8 +34,8 @@
 					<div class="card">
 						<div class="card-header bg-primary">
 							<div class="ec-brand">
-								<a href="index.html" title="Ekka">
-									<img class="ec-brand-icon" src="{{asset('public/backend/assets/img/logo/logo-login.png')}}" alt="" />
+								<a href="index.html" title="Ekka" style="justify-content: center;">
+									<img class="ec-brand-icon" src="{{asset('public/backend/assets/img/logo/logo-admin.png')}}" alt="" />
 								</a>
 							</div>
 						</div>

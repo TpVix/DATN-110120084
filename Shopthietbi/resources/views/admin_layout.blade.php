@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="description" content="Ekka - Admin Dashboard eCommerce HTML Template.">
 
-	<title>Ekka - Admin Dashboard eCommerce HTML Template.</title>
+	<title>Trang Admin</title>
 
 	<!-- GOOGLE FONTS -->
 	<link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -40,11 +40,17 @@
 		<div class="ec-left-sidebar ec-bg-sidebar">
 			<div id="sidebar" class="sidebar ec-sidebar-footer">
 
-				<div class="ec-brand">
-					<a href="{{url('/dashboard')}}" title="Ekka">
-						<img class="ec-brand-icon" src="{{asset('public/backend/assets/img/logo/ec-site-logo.png')}}" alt="" />
-						<span class="ec-brand-name text-truncate">Ekka</span>
-					</a>
+				<div class="ec-brand d-flex justify-content-center" >
+					
+					<div class="ec-brand" >
+						<a href="{{url('/dashboard')}}" title="Ekka" style="padding: 0px;width:100%;">
+							
+						
+							<img class="ec-brand-name text-truncate" src="{{asset('public/frontend/assets/images/logo.png')}}" style="width:75px;height: 75px;" alt="" />
+
+						</a>
+					</div>
+				
 				</div>
 
 				<!-- begin sidebar scrollbar -->
@@ -77,7 +83,7 @@
 											</a>
 										</li>
 										<li class="">
-											<a class="sidenav-item-link" href="user-profile.html">
+											<a class="sidenav-item-link" href="{{URL::to('/list-customer')}}">
 												<span class="nav-text">Tài khoản khách hàng</span>
 											</a>
 										</li>

@@ -17,8 +17,8 @@
       <div class="front">
         <img src="{{asset('public/frontend/images/frontImg.jpg')}}" alt="">
         <div class="text">
-          <span class="text-1">Every new friend is a <br> new adventure</span>
-          <span class="text-2">Let's get connected</span>
+          <span class="text-1">Shop thiết bị điện tử</span>
+          <span class="text-2">Đa dạng - Tiện lợi - Nhanh chóng</span>
         </div>
       </div>
       <div class="back">
@@ -52,7 +52,7 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" name="login_password" placeholder="Mật khẩu" required>
               </div>
-              <div class="text"><a href="#">Quên mật khẩu?</a></div>
+              
               <div class="button input-box">
                 <input type="submit" value="Đăng nhập">
               </div>
@@ -104,10 +104,7 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" name="register_password" placeholder="Mật khẩu" required>
               </div>
-              <div class="input-box">
-                <i class="fas fa-phone"></i>
-                <input type="text" name="register_phone" placeholder="Số điện thoại" required>
-              </div>
+             
               <div class="button input-box">
                 <input type="submit" value="Đăng ký">
               </div>
