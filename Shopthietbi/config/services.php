@@ -29,16 +29,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-    'facebook' => [
-        'client_id' => '404178339087364',  //client face của bạn
-        'client_secret' => '2241116fd4fa663e82d0d063ca2bbf84',  //client app service face của bạn
-        'redirect' => 'http://localhost/DATN/Shopthietbi/login-register/callback',
-        // 'https://webthietbi.laravel.com/DATN/Shopthietbi/login-register/callback' //callback trả về
-    ],
     'google' => [
-        'client_id' => '1083870604409-md83ov0negr5b8nej0fhou49jcruq6vv.apps.googleusercontent.com',
-        'client_secret' => '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',
-        'redirect' => 'http://localhost/datn-110120084/Shopthietbi/login-gg/callback'
+        'client_id' => '444998331046-mpn9ghuh948ffhfhi2ceik4cqcljb5b1.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => request()->root() . '/login-gg/callback'
     ],
 
 ];

@@ -183,10 +183,10 @@ class CheckoutController extends Controller
     }
     public function vnpay_payment(Request $request)
     {
-        $vnp_TmnCode = "WXY3QFTM"; //Mã định danh merchant kết nối (Terminal Id)
-        $vnp_HashSecret = "5H7FEHHU735BP9KT05Q8N8ECYQR8CZJE"; //Secret key
+        $vnp_TmnCode = "NWK6ZW3C";
+        $vnp_HashSecret = "CZ0LXWXJVBCWGP0904JHBYOTCCSYWI6J";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://localhost/datn-110120084/Shopthietbi/vnpay-return";
+        $vnp_Returnurl = url("/vnpay-return");        
         $vnp_TxnRef = $request->order_code;
         $vnp_OrderInfo = "Thanh toán VN Pay";
         $vnp_OrderType = "Billvnpay";
@@ -261,7 +261,7 @@ class CheckoutController extends Controller
 
     public function vnpay_return(Request $request)
     {
-        $vnp_HashSecret = "5H7FEHHU735BP9KT05Q8N8ECYQR8CZJE"; //Secret key
+        $vnp_HashSecret = "CZ0LXWXJVBCWGP0904JHBYOTCCSYWI6J"; //Secret key
         $data_shipping = Session::get('data_shipping');
         $inputData = $request->all();
         $vnp_SecureHash = $inputData['vnp_SecureHash'];

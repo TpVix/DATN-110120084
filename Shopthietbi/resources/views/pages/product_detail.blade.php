@@ -322,7 +322,7 @@
                             <div class="row">
                                 <div id="fb-root"></div>
                                 <script async defer crossorigin="anonymous"
-                                    src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v20.0&appId=404178339087364" nonce="BWC6qifD">
+                                    src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v20.0" nonce="BWC6qifD">
                                 </script>
 
                                 <div class="fb-comments" data-href="{{ $url }}" data-width="100%"
