@@ -6,7 +6,7 @@
         <h3 class="account-sub-title d-none d-md-block"><i
                 class="sicon-social-dropbox align-middle mr-3"></i>Đơn hàng</h3>
         <div class="order-table-container text-center">
-            <table class="table table-order text-left">
+            <table class="table table-order text-left table_data">
                 <thead>
                     <tr>
                         <th class="order-id">Đơn hàng</th>

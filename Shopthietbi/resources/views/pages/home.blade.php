@@ -7,7 +7,7 @@
         'loop': false
     }">
             @foreach ($slider_large as $slider_large)
-                <div class="home-slide home-slide2 banner banner-md-vw">
+                <div class="home-slide2 banner banner-md-vw">
                     <img class="slide-bg" style="background-color: #ccc;" width="1903" height="499"
                         src="{{ URL::to('public/upload/banner/' . $slider_large->slider_image) }}" alt="slider image">
 
@@ -119,7 +119,7 @@
                         <div class="product-details">
                             
                             <h3 class="product-title">
-                                <a href="product.html">{{$v_selling_products->product_name}}</a>
+                                <a href="{{ URL::to('/san-pham/' . $v_selling_products->product_slug) }}">{{$v_selling_products->product_name}}</a>
                             </h3>
                             <div>
                                 <ul style="display: flex;">
@@ -128,13 +128,8 @@
                                         $mean_selling_product = 0;
                                         $total_start_selling_product = 0;
 
-                                        $rating = DB::table('tbl_comment')
-                                            ->join(
-                                                'tbl_rating',
-                                                'tbl_rating.comment_id',
-                                                '=',
-                                                'tbl_comment.comment_id',
-                                            )
+                                        $rating = DB::table('tbl_rating')
+                                          
                                             ->where('product_id', $v_selling_products->product_id)
                                             ->orderBy('rating_id', 'desc')
                                             ->get();
@@ -318,7 +313,7 @@
                             <div class="product-details">
                                
                                 <h3 class="product-title">
-                                    <a href="product.html">{{ $new_product->product_name }}</a>
+                                    <a href="{{ URL::to('/san-pham/' . $new_product->product_slug) }}">{{ $new_product->product_name }}</a>
                                 </h3>
                                 <div>
                                     <ul style="display: flex;">
@@ -327,13 +322,8 @@
                                             $mean_new_product = 0;
                                             $total_start_new_product = 0;
 
-                                            $rating = DB::table('tbl_comment')
-                                                ->join(
-                                                    'tbl_rating',
-                                                    'tbl_rating.comment_id',
-                                                    '=',
-                                                    'tbl_comment.comment_id',
-                                                )
+                                            $rating = DB::table('tbl_rating')
+                                               
                                                 ->where('product_id', $new_product->product_id)
                                                 ->orderBy('rating_id', 'desc')
                                                 ->get();
@@ -524,7 +514,7 @@
                                     <div class="product-details">
                                         
                                         <h3 class="product-title">
-                                            <a href="product.html">{{ $v_product_promotion->product_name }}</a>
+                                            <a href="{{ URL::to('/san-pham/' . $v_product_promotion->product_slug) }}">{{ $v_product_promotion->product_name }}</a>
                                         </h3>
                                         <div class="ratings-container">
                                             <ul style="display: flex;">
@@ -532,13 +522,8 @@
                                                     $count_product_promotion = 0;
                                                     $mean_product_promotion = 0;
                                                     $total_start_product_promotion = 0;
-                                                    $rating = DB::table('tbl_comment')
-                                                        ->join(
-                                                            'tbl_rating',
-                                                            'tbl_rating.comment_id',
-                                                            '=',
-                                                            'tbl_comment.comment_id',
-                                                        )
+                                                    $rating = DB::table('tbl_rating')
+                                                        
                                                         ->where('product_id', $v_product_promotion->product_id)
                                                         ->orderBy('rating_id', 'desc')
                                                         ->get();
@@ -700,7 +685,7 @@
                                 <div class="product-details">
                                     
                                     <h3 class="product-title">
-                                        <a href="product.html">{{ $v_RCM_product->product_name }}</a>
+                                        <a href="{{ URL::to('/san-pham/' . $v_RCM_product->product_slug) }}">{{ $v_RCM_product->product_name }}</a>
                                     </h3>
                                     <div class="ratings-container">
                                         <ul style="display: flex;">
@@ -708,13 +693,8 @@
                                                 $count = 0;
                                                 $mean = 0;
                                                 $total_start = 0;
-                                                $rating = DB::table('tbl_comment')
-                                                    ->join(
-                                                        'tbl_rating',
-                                                        'tbl_rating.comment_id',
-                                                        '=',
-                                                        'tbl_comment.comment_id',
-                                                    )
+                                                $rating = DB::table('tbl_rating')
+                                                    
                                                     ->where('product_id', $v_RCM_product->product_id)
                                                     ->orderBy('rating_id', 'desc')
                                                     ->get();

@@ -16223,6 +16223,11 @@ tbody .product-col {
   margin-bottom: 1rem;
   text-align: center;
 }
+.product-desc-content p img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .box-content .btn-go-shop {
   padding: 16px 0;
   margin-top: 2rem;

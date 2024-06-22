@@ -39,9 +39,14 @@ class CartController extends Controller
     public function show_cart()
     {
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status', 'Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
+        $total_cart = 0;
+        foreach ($cart_detail as $key => $v_cart_detail) {
+            $total_cart += $v_cart_detail->product_quantity;
+        }
+        Session::put('total_cart', $total_cart);
         return view('pages.cart.show_cart')
             ->with('cart_detail', $cart_detail)
             ->with('category', $category)
@@ -50,30 +55,22 @@ class CartController extends Controller
     }
     public function delete_cart($product_id)
     {
-        $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
-        $brand = Brand::where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
+       
         DB::table('tbl_cart_detail')
             ->where('product_id', $product_id)
             ->where('customer_id', Session::get('customer_id'))
             ->delete();
         Session::put('message', 'Xoá thành công');
 
-        return Redirect()->back()
-            ->with('category', $category)
-            ->with('all_accessory', $all_accessory)
-            ->with('brand', $brand);
+        return Redirect()->back();
     }
     public function update_cart($product_id, Request $request)
     {
-        // Lấy giá trị số lượng từ request
         $value_product = DB::table('tbl_product')->where('product_id', $product_id)->get();
         $cart_quantity = $request->input('cart_qty_' . $product_id);
         foreach ($value_product as $key => $v_product) {
 
-            // Kiểm tra xem số lượng có hợp lệ không
             if ($cart_quantity && $cart_quantity > 0 && $cart_quantity < $v_product->product_quantity) {
-                // Cập nhật số lượng sản phẩm trong giỏ hàng
                 DB::table('tbl_cart_detail')
                     ->where('product_id', $product_id)
                     ->where('customer_id', Session::get('customer_id'))
@@ -82,7 +79,6 @@ class CartController extends Controller
                 Session::put('message', 'Số lượng không hợp lệ');
             }
         }
-        // Quay lại trang trước
         return Redirect()->back();
     }
 
@@ -90,7 +86,14 @@ class CartController extends Controller
     public function add_cart(Request $request)
     {
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
+        $total_cart = 0;
+        foreach ($cart_detail as $key => $v_cart_detail) {
+            $total_cart += $v_cart_detail->product_quantity;
+        }
+        Session::put('total_cart', $total_cart);
+        
         $check = DB::table('tbl_product')->where('product_id', $request->cart_product_id)->first();
+        
         if ($request->cart_product_qty > $check->product_quantity) {
             Session::put('sl_qua_lon', 'Số lượng không phù hợp');
             return Redirect()->back();
@@ -118,10 +121,9 @@ class CartController extends Controller
                         $data_cart_detail['product_quantity'] = $v_cart_detail->product_quantity + $request->cart_product_qty;
                         DB::table('tbl_cart_detail')->where('cart_detail_id', $v_cart_detail->cart_detail_id)->update($data_cart_detail);
                         $product_exist = true;
-                        break; // Exit the loop if product is found
+                        break;
                     }
                 }
-                // If product does not exist in cart, add it
                 if (!$product_exist) {
                     $data_cart_detail = array();
                     $data_cart_detail['customer_id'] = Session::get('customer_id');

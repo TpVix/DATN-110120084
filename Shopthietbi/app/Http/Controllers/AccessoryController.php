@@ -88,33 +88,54 @@ class AccessoryController extends Controller
     public function product_accessory($accessory_id,Request $request)
     {
        Session::put('accessory_id',$accessory_id);
+        // $all_product = DB::table('tbl_product')
+        // ->leftJoin('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
+        
+        // ->leftJoin('tbl_accessory', 'tbl_accessory.accessory_id', '=', 'tbl_product.accessory_id')
+        // ->where('category_id',0)
+        // ->orderBy('product_id','desc')->get();
+       
+        
+        $accessory_ids = DB::table('tbl_accessory_product')
+            ->where('tbl_accessory_product.accessory_id',$accessory_id)
+            ->get();
+       
         $all_product = DB::table('tbl_product')
-        ->leftJoin('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
-        ->leftJoin('tbl_accessory', 'tbl_accessory.accessory_id', '=', 'tbl_product.accessory_id')
-        ->where('category_id',0)
-        ->orderBy('product_id','desc')->get();
-
+            ->leftJoin('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
+            // ->leftJoin('tbl_accessory_product', 'tbl_accessory_product.product_id', '=', 'tbl_product.product_id')
+            // ->leftJoin('tbl_accessory', 'tbl_accessory.accessory_id', '=', 'tbl_accessory_product.accessory_id')
+            ->where('tbl_product.category_id', 0)
+            
+            // ->where('tbl_accessory_product.accessory_id','!=', $accessory_ids)
+            ->orderBy('tbl_product.product_id', 'desc')
+            ->get();
+         
         $accessory_name = DB::table('tbl_accessory')->where('accessory_id',$accessory_id)->first();
        
         $product_accessory = DB::table('tbl_product')
-        ->where('accessory_id',$accessory_id)
-        ->orderBy('product_id','desc')->get();
-        return view('admin.accessory.product_accessory')->with(compact('all_product','accessory_id','accessory_name','product_accessory'));
+        ->Join('tbl_accessory_product', 'tbl_accessory_product.product_id', '=', 'tbl_product.product_id')
+        ->Join('tbl_accessory', 'tbl_accessory.accessory_id', '=', 'tbl_accessory_product.accessory_id')
+        ->where('tbl_accessory.accessory_id',$accessory_id)
+        ->orderBy('tbl_product.product_id','desc')->get();
+        return view('admin.accessory.product_accessory')->with(compact('all_product','accessory_ids','accessory_id','accessory_name','product_accessory'));
     }
     public function chose_product_accessory($product_id)
     {
-        DB::table('tbl_product')
-        ->where('product_id', $product_id)
-        ->update(['accessory_id' => Session::get('accessory_id')]);
+        $data=array();
+        $data['product_id'] =  $product_id;
+        $data['accessory_id'] = Session::get('accessory_id');
+        DB::table('tbl_accessory_product')
+        ->insert($data);
 
         Session::put('chose_success','Thêm thành công');
         return Redirect()->back();
     }
     public function delete_product_accessory($product_id)
     {
-        DB::table('tbl_product')->where('product_id', $product_id)
-        ->update(['accessory_id' => 0]);
-
+        DB::table('tbl_accessory_product')
+        ->where('accessory_id', Session::get('accessory_id'))
+        ->where('product_id', $product_id)
+        ->delete();
         Session::put('chose_success','Xoá thành công');
         return Redirect()->back();
     }

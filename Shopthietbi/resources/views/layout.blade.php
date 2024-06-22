@@ -39,6 +39,9 @@
     <link rel="stylesheet" href="{{asset('public/frontend/assets/css/bootstrap.min.css')}}">
 	{{-- <link rel="stylesheet" href="{{asset('public/frontend/assets/css/style.css')}}"> --}}
 	<link rel="stylesheet" href="{{asset('public/frontend/assets/css/style.min.css')}}">
+
+    <link rel="stylesheet" href="{{asset('public/frontend/assets/css/style.css')}}">
+
 	<link rel="stylesheet" type="text/css" href="{{asset('public/frontend/assets/vendor/fontawesome-free/css/all.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('public/frontend/assets/vendor/simple-line-icons/css/simple-line-icons.min.css')}}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
@@ -143,7 +146,7 @@
                         <div class="dropdown cart-dropdown">
                             <a href="#"class="dropdown-toggle dropdown-arrow cart-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <i class="minicart-icon"></i>
-                                {{-- <span class="cart-count badge-circle">3</span> --}}
+                                <span class="cart-count badge-circle">{{Session::get('total_cart')}}</span>
                             </a>
 
                             <div class="cart-overlay"></div>
@@ -405,7 +408,7 @@
             </div>
             <!-- End .footer-middle -->
 
-            <div class="container">
+            {{-- <div class="container">
                 <div class="footer-bottom">
                     <div class="container d-sm-flex align-items-center">
                         <div class="footer-left">
@@ -423,7 +426,7 @@
                     </div>
                 </div>
                 <!-- End .footer-bottom -->
-            </div>
+            </div> --}}
             <!-- End .container -->
         </footer>
         <!-- End .footer -->
@@ -668,7 +671,7 @@
     <!-- Main JS File -->
     <script src="{{asset('public/frontend/assets/js/main.min.js')}}"></script>
     <!-- This site is converting visitors into subscribers and customers with https://respond.io -->
-    <script>
+    {{-- <script>
         window.embeddedChatbotConfig = {
         chatbotId: "pUMWodtrWZENwkpa8EmBt",
         domain: "www.chatbase.co"
@@ -679,7 +682,7 @@
         chatbotId="pUMWodtrWZENwkpa8EmBt"
         domain="www.chatbase.co"
         defer>
-        </script>
+        </script> --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const paymentOptions = document.querySelectorAll('input[name="payment_option"]');

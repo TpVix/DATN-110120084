@@ -222,11 +222,27 @@
 							
 						</li>
 						<!-- Reviews -->
-						<li class="active">
-							<a class="sidenav-item-link" href="{{url('/list-review')}}">
+						
+						<li class="has-sub active">
+							<a class="sidenav-item-link" href="javascript:void(0)">
 								<i class="mdi mdi-star-half"></i>
-								<span class="nav-text">Đánh giá</span>
+								<span class="nav-text">Đánh giá</span><b class="caret"></b>
 							</a>
+							<div class="collapse">
+								<ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
+									<li class="">
+										<a class="sidenav-item-link" href="{{URL::to('/list-comment')}}">
+											<span class="nav-text">Bình luận</span>
+										</a>
+									</li>
+									<li class="">
+										<a class="sidenav-item-link" href="{{URL::to('/list-review')}}">
+											<span class="nav-text">Đánh giá</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+							
 						</li>
 						<li class="active">
 							<a class="sidenav-item-link" href="{{url('/add-promotion')}}">
@@ -525,7 +541,6 @@
 		});
 	</Script>
     <script>
-        // Sử dụng CKEDITOR.replace để gắn CKEditor cho textarea có ID 'editor1'
         CKEDITOR.replace('editor1');
         CKEDITOR.replace('editor2');
     </script>

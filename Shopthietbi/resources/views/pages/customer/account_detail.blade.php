@@ -18,7 +18,7 @@
                 <div style="display: flex; align-items: center;"><input type="text" value="{{$customer_name}}" class="form-control" id="acc-text" name="customer_name"
                     placeholder="Editor" required /> 
                    
-                        <button type="submit" style="margin-left: 10px;" class="btn btn-dark mr-0">
+                        <button type="submit" style="margin-left: 10px; height: 50px; padding: 1em 1.6em;" class="btn btn-dark mr-0">
                             Lưu thay đổi
                         </button>
                     </div>

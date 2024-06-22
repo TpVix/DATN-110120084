@@ -51,6 +51,8 @@
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{ asset('public/frontend/assets/css/demo4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/frontend/assets/css/sweetalert.css') }}">
+    <link id="ekka-css" href="{{asset('public/backend/assets/css/datatable.min.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{asset('public/frontend/assets/css/style.css')}}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('public/frontend/assets/vendor/fontawesome-free/css/all.min.css') }}">
 </head>
@@ -88,14 +90,6 @@
                                 </ul>
                             </div>
                             <!-- End .header-menu -->
-                        </div>
-                        <!-- End .header-dropown -->
-
-
-                        <div class="social-icons">
-                            <a href="{{URL::to('/login-google')}}" class="social-icon social-gplus icon-gplus" target="_blank"><i
-                                    class="fab fa-google-plus-g"></i></a>
-
                         </div>
                         <!-- End .social-icons -->
                     </div>
@@ -161,7 +155,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 data-display="static">
                                 <i class="minicart-icon"></i>
-                                {{-- <span class="cart-count badge-circle">3</span> --}}
+                                <span class="cart-count badge-circle">{{Session::get('total_cart')}}</span>
                             </a>
 
                             <div class="cart-overlay"></div>
@@ -498,7 +492,7 @@
             </div>
             <!-- End .footer-middle -->
 
-            <div class="container">
+            {{-- <div class="container">
                 <div class="footer-bottom">
                     <div class="container d-sm-flex align-items-center">
                         <div class="footer-left">
@@ -520,7 +514,7 @@
                     </div>
                 </div>
                 <!-- End .footer-bottom -->
-            </div>
+            </div> --}}
             <!-- End .container -->
         </footer>
         <!-- End .footer -->
@@ -762,12 +756,17 @@
     <script src="{{ asset('public/frontend/assets/js/sweetalert.js') }}"></script>
     {{-- <script src="{{ asset('public/frontend/assets/js/map.js') }}"></script> --}}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgE-0rcnwd-H2jkwj9svQ_ogC_Rztr5GQ"></script>
+	<script src="{{asset('public/backend/assets/js/datatable.js')}}"></script>
 
     <!-- Main JS File -->
     <script src="{{ asset('public/frontend/assets/js/main.min.js') }}"></script>
     <!-- This site is converting visitors into subscribers and customers with https://respond.io -->
-    
-    <script>
+    <Script type="text/javascript">
+		$(document).ready(function(){
+			$('.table_data').DataTable();
+		});
+	</Script>
+    {{-- <script>
         window.embeddedChatbotConfig = {
         chatbotId: "pUMWodtrWZENwkpa8EmBt",
         domain: "www.chatbase.co"
@@ -778,7 +777,7 @@
         chatbotId="pUMWodtrWZENwkpa8EmBt"
         domain="www.chatbase.co"
         defer>
-        </script>
+        </script> --}}
     <script>
         function submitSearchForm() {
             var searched = document.getElementById('searched').value;

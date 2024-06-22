@@ -24,7 +24,7 @@
                                     <label for="text" class="col-12 col-form-label">Tên</label>
                                     <div class="col-12">
                                         <input id="text" name="accessory_name" class="form-control here slug-title"
-                                            type="text">
+                                            type="text" required>
                                     </div>
                                 </div>
 
@@ -32,7 +32,7 @@
                                     <label for="text" class="col-12 col-form-label">Đường dẫn</label>
                                     <div class="col-12">
                                         <input id="text" name="accessory_slug" class="form-control here slug-title"
-                                            type="text">
+                                            type="text" required>
                                     </div>
                                 </div>
 

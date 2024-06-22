@@ -20,7 +20,7 @@ class CheckoutController extends Controller
     public function checkout()
     {
         $category = Category::where('category_status', '1')->orderBy('category_slug', 'desc')->get();
-        $all_accessory = DB::table('tbl_accessory')->where('accessory_status','Hiện')->orderBy('accessory_id', 'desc')->get();
+        $all_accessory = DB::table('tbl_accessory')->where('accessory_status', 'Hiện')->orderBy('accessory_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderBy('brand_slug', 'desc')->get();
         $customer_id = Session::get('customer_id');
         $address = DB::table('tbl_address')
@@ -36,6 +36,11 @@ class CheckoutController extends Controller
             $shipping_fee = 100000;
         }
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
+        $total_cart = 0;
+        foreach ($cart_detail as $key => $v_cart_detail) {
+            $total_cart += $v_cart_detail->product_quantity;
+        }
+        Session::put('total_cart', $total_cart);
         $order_code = $this->generateRandomString();
         return view('pages.checkout.checkout')
             ->with('order_code', $order_code)
@@ -131,6 +136,11 @@ class CheckoutController extends Controller
         $order_id = DB::table('tbl_order')->insertGetId($data_order);
         //insert order detail'
         $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
+        $total_cart = 0;
+        foreach ($cart_detail as $key => $v_cart_detail) {
+            $total_cart += $v_cart_detail->product_quantity;
+        }
+        Session::put('total_cart', $total_cart);
         foreach ($cart_detail as $v_content) {
             $data_order_detail = array();
             $data_order_detail['order_id'] = $order_id;  // Correctly adding order_id to the detail array
@@ -186,7 +196,7 @@ class CheckoutController extends Controller
         $vnp_TmnCode = "NWK6ZW3C";
         $vnp_HashSecret = "CZ0LXWXJVBCWGP0904JHBYOTCCSYWI6J";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = url("/vnpay-return");        
+        $vnp_Returnurl = url("/vnpay-return");
         $vnp_TxnRef = $request->order_code;
         $vnp_OrderInfo = "Thanh toán VN Pay";
         $vnp_OrderType = "Billvnpay";
@@ -322,6 +332,11 @@ class CheckoutController extends Controller
                 $data_order['order_status'] = 'Đang chờ xử lý';
                 $order_id = DB::table('tbl_order')->insertGetId($data_order);
                 $cart_detail = DB::table('tbl_cart_detail')->where('customer_id', Session::get('customer_id'))->get();
+                $total_cart = 0;
+                foreach ($cart_detail as $key => $v_cart_detail) {
+                    $total_cart += $v_cart_detail->product_quantity;
+                }
+                Session::put('total_cart', $total_cart);
                 foreach ($cart_detail as $v_content) {
                     $data_order_detail = array();
                     $data_order_detail['order_id'] = $order_id;  // Correctly adding order_id to the detail array

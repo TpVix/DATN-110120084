@@ -26,7 +26,7 @@
                           
                                   <th>Giá</th>
                               
-                                  <th>Nhóm phụ kiện</th>
+                                  {{-- <th>Nhóm phụ kiện</th> --}}
                                   <th>Tên thương hiệu</th>
                                  
                                   <th>Hành động</th>
@@ -34,29 +34,26 @@
                               </thead>
                 
                               <tbody>
+                                @php
+                                $product_ids_with_accessory = $accessory_ids->pluck('product_id')->toArray();
+                                @endphp
                                 @foreach ($all_product as $key => $product)
-                                <tr>
-                                  <td><img src="{{ url('public/upload/' . $product->product_image) }}" height="100" width="100" alt=""></td>
-                              <td>{{ $product -> product_name}}</td>
-                          
-                              <td>{{ $product -> product_price}}</td>
-                         
-                              <td>{{ $product -> accessory_name}}</td>
-                              <td>{{ $product -> brand_name}}</td>
-                              
-                
-                              <td
-                              
-                              >
-                                <a href="{{URL::to('/chose-product-accessory/'.$product->product_id)}}" class="btn btn-outline-success" ui-toggle-class="">
-                                   Chọn <i class="fa fa-pencil-square-o text-success text-active"></i>
-                                </a>
+                                @if (!in_array($product->product_id, $product_ids_with_accessory))
+                                    <tr>
+                                        <td><img src="{{ url('public/upload/' . $product->product_image) }}" height="100" width="100" alt=""></td>
+                                    <td>{{ $product -> product_name}}</td>
+                                
+                                    <td>{{ $product -> product_price}}</td>
                                
-                              </td>
-                                </tr>
-                
-                
-                      
+                                    {{-- <td>{{ $product -> accessory_name}}</td> --}}
+                                    <td>{{ $product -> brand_name}}</td>                                    
+                                    <td>
+                                        <a href="{{ URL::to('/chose-product-accessory/' . $product->product_id) }}" class="btn btn-outline-success" ui-toggle-class="">
+                                            Chọn <i class="fa fa-pencil-square-o text-success text-active"></i>
+                                        </a>
+                                    </td>
+                                      </tr>
+                                      @endif
                                 @endforeach
                               </tbody>
                             </table>

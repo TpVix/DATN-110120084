@@ -31,8 +31,8 @@
                 @endphp
                 <tr>
                   <td> {{ $customer -> customer_name}}</td>
-                  <td> {{ $v_list_review -> comment}}</td>
-                  <td> {{ $v_list_review -> rating_start}}</td>
+                  <td> {{ $v_list_review -> rating_review}}</td>
+                  <td> {{ $v_list_review -> rating_start}} sao</td>
                   <td> {{ $product -> product_name}}</td>
                  
                  

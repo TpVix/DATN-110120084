@@ -18,6 +18,8 @@ Route::get('/contact-us', 'HomeController@contact_us');
 Route::get('/trang_chu', 'HomeController@index');
 Route::get('/tim-kiem/{search}', 'HomeController@search');
 Route::get('/rating', 'HomeController@rating');
+Route::get('/comment', 'HomeController@comment');
+
 Route::get('/filter-price/start={start_price}end={end_price}', 'HomeController@filter_price');
 Route::post('/autocomplete-search', 'HomeController@autocomplete_search');
 //customer
@@ -168,7 +170,7 @@ Route::post('/save-accessory', 'AccessoryController@save_accessory');
 Route::get('/edit-accessory/{accessory_id}', 'AccessoryController@edit_accessory');
 Route::post('/update-accessory/{accessory_id}', 'AccessoryController@update_accessory');
 Route::get('/delete-accessory/{accessory_id}', 'AccessoryController@delete_accessory');
-//Manage Orer
+//Manage Order
 Route::group(['middleware' => ['auth:admin', 'checkAdminRole:Quản trị viên,Quản lý']], function () {
     Route::get('/print-order/{checkout_code}', 'OrderController@print_order');
     Route::get('/manage-order', 'OrderController@manage_order');
@@ -184,7 +186,9 @@ Route::group(['middleware' => ['auth:admin', 'checkAdminRole:Quản trị viên,
     Route::post('/select-shipping-fee', 'DeliveryController@select_shipping_fee');
     Route::post('/update-delivery', 'DeliveryController@update_delivery');
 });
-//Reviews
+//Reviews - comment
 Route::get('/list-review', 'ReviewController@list_review');
-
+Route::get('/list-comment', 'ReviewController@list_comment');
+Route::get('/acept-comment/{comment_id}', 'ReviewController@acept_comment');
+Route::get('/delete-comment/{comment_id}', 'ReviewController@delete_comment');
 

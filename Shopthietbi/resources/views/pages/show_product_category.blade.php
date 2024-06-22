@@ -138,13 +138,8 @@
                                                     $count = 0;
                                                     $mean = 0;
                                                     $total_start = 0;
-                                                    $rating = DB::table('tbl_comment')
-                                                        ->join(
-                                                            'tbl_rating',
-                                                            'tbl_rating.comment_id',
-                                                            '=',
-                                                            'tbl_comment.comment_id',
-                                                        )
+                                                    $rating = DB::table('tbl_rating')
+                                                        
                                                         ->where('product_id', $product_category->product_id)
                                                         ->orderBy('rating_id', 'desc')
                                                         ->get();

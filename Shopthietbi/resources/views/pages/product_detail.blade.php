@@ -238,7 +238,6 @@
 
                             <!-- End .product-action -->
 
-                            <hr class="divider mb-0 mt-0">
                             <form action="{{ URL::to('/add-wishlist') }}" id="form-wishlist" method="post">
                                 @csrf
                                 <div class="product-single-share mb-3">
@@ -308,7 +307,7 @@
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="product-desc-content" role="tabpanel"
                         aria-labelledby="product-tab-desc">
-                        <div class="product-desc-content">
+                        <div class="product-desc-content" style="background: #f4f4f4; color: black; padding: 1px 20px 1px 20px;">
                             <p>{!! $detail->product_desc !!}</p>
 
                         </div>
@@ -318,17 +317,67 @@
 
                     <div class="tab-pane fade" id="product-comment-content" role="tabpanel"
                         aria-labelledby="product-tab-size">
-                        <div class="product-size-content">
-                            <div class="row">
-                                <div id="fb-root"></div>
-                                <script async defer crossorigin="anonymous"
-                                    src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v20.0" nonce="BWC6qifD">
-                                </script>
+                        <div class="product-reviews-content">
+                            @php
+                                use Carbon\Carbon;
+                            @endphp
+                            <div class="comment-list">
 
-                                <div class="fb-comments" data-href="{{ $url }}" data-width="100%"
-                                    data-numposts="10"></div>
+                                @foreach ($comment as $v_comment)
+                                    <div class="comments mb-2">
+                                        <figure class="img-thumbnail">
+                                            <img src="{{asset('public/frontend/assets/images/rating_comment_user.png')}}" alt="author" width="80"
+                                                height="80">
+                                        </figure>
+
+                                        <div class="comment-block">
+                                            <div class="comment-header">
+                                                <div class="comment-arrow"></div>
+                                                <span class="comment-by">
+                                                    @php
+                                                        $customer = DB::table('tbl_customers')
+                                                            ->where('customer_id', $v_comment->customer_id)
+                                                            ->first();
+                                                    @endphp
+                                                    <strong>{{ $customer->customer_name }}</strong>
+
+                                                    {{ $v_comment->created_at ? Carbon::parse($v_comment->created_at)->format('H:i d/m/Y') : 'N/A' }}
+                                                </span>
+                                            </div>
+
+                                            <div class="comment-content">
+                                                <p>{{ $v_comment->comment}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div style="float: right;">{{ $comment->linkS() }}</div>
+                            <div class="add-product-review">
+                                <h3 class="review-title">Thêm bình luận</h3>
+
+                                <form action="{{ URL::to('/comment') }}" class="comment-form m-0" method="get">
+                                    @foreach ($product_detail as $item)
+                                        <input type="hidden" name="product_id" value="{{ $item->product_id }}">
+                                    @endforeach
+
+                                    <div class="form-group">
+                                        <label>Bình luận: </label>
+                                        <textarea cols="5" rows="6" name="comment" class="form-control form-control-sm"></textarea>
+                                    </div>
+                                    <!-- End .form-group -->
 
 
+
+                                    <div style="text-align: right;">
+                                        @if (Session::get('customer_id') == null)
+                                            <a href="{{ url('/login-register') }}" class="btn btn-primary">Đăng nhập để
+                                                bình luận</a>
+                                        @else
+                                            <input type="submit" class="btn btn-primary" value="Bình luận">
+                                        @endif
+                                    </div>
+                                </form>
                             </div>
                             <!-- End .row -->
                         </div>
@@ -342,15 +391,12 @@
                         aria-labelledby="product-tab-reviews">
                         <div class="product-reviews-content">
 
-                            @php
-                                use Carbon\Carbon;
-                            @endphp
                             <div class="comment-list">
 
                                 @foreach ($rating as $v_rating)
                                     <div class="comments mb-2">
                                         <figure class="img-thumbnail">
-                                            <img src="assets/images/blog/author.jpg" alt="author" width="80"
+                                            <img src="{{asset('public/frontend/assets/images/rating_comment_user.png')}}" alt="author" width="80"
                                                 height="80">
                                         </figure>
 
@@ -393,14 +439,13 @@
                                             </div>
 
                                             <div class="comment-content">
-                                                <p>{{ $v_rating->comment }}</p>
+                                                <p>{{ $v_rating->rating_review }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
                             </div>
                             <div style="float: right;">{{ $rating->linkS() }}</div>
-                            <div class="divider"></div>
 
                             <div class="add-product-review">
                                 <h3 class="review-title">Thêm đánh giá</h3>
@@ -432,7 +477,7 @@
 
                                     <div class="form-group">
                                         <label>Bình luận: <span class="required">*</span></label>
-                                        <textarea cols="5" rows="6" name="rating_comment" class="form-control form-control-sm"></textarea>
+                                        <textarea cols="5" rows="6" name="rating_review" class="form-control form-control-sm"></textarea>
                                     </div>
                                     <!-- End .form-group -->
 
@@ -443,7 +488,13 @@
                                             <a href="{{ url('/login-register') }}" class="btn btn-primary">Đăng nhập để
                                                 đánh giá</a>
                                         @else
-                                            <input type="submit" class="btn btn-primary" value="Đánh giá">
+                                           
+                                                @if (Session::get('true') == '2')
+                                                    <input type="submit" class="btn btn-primary" value="Đánh giá">
+                                                @else
+                                                    <label for="">Vui lòng mua hàng để có thể đánh giá</label>
+                                                @endif
+                                            
                                         @endif
                                     </div>
                                 </form>
@@ -495,13 +546,8 @@
                                             $count_related_product = 0;
                                             $mean_related_product = 0;
                                             $total_start_related_product = 0;
-                                            $rating = DB::table('tbl_comment')
-                                                ->join(
-                                                    'tbl_rating',
-                                                    'tbl_rating.comment_id',
-                                                    '=',
-                                                    'tbl_comment.comment_id',
-                                                )
+                                            $rating = DB::table('tbl_rating')
+                            
                                                 ->where('product_id', $related_product->product_id)
                                                 ->orderBy('rating_id', 'desc')
                                                 ->get();

@@ -56,13 +56,8 @@
                                             $count = 0;
                                             $mean = 0;
                                             $total_start = 0;
-                                            $rating = DB::table('tbl_comment')
-                                                ->join(
-                                                    'tbl_rating',
-                                                    'tbl_rating.comment_id',
-                                                    '=',
-                                                    'tbl_comment.comment_id',
-                                                )
+                                            $rating = DB::table('tbl_rating')
+                                                
                                                 ->where('product_id', $filter->product_id)
                                                 ->orderBy('rating_id', 'desc')
                                                 ->get();
@@ -140,13 +135,13 @@
 
                                 <div class="product-action">
                                            
-                                            <form action="" method="post">
+                                            <form action="{{URL::to('/add-cart')}}" method="post">
                                                 @csrf
-                                                <input type="hidden" name="" value="{{$filter-> product_id}}"
+                                                <input type="hidden" name="cart_product_id" value="{{$filter-> product_id}}"
                                                  class="cart_product_id_{{$filter-> product_id}}">
-                                                 <input type="hidden" name="" value="{{$filter-> product_name}}"
+                                                 <input type="hidden" name="cart_product_name" value="{{$filter-> product_name}}"
                                                  class="cart_product_name_{{$filter-> product_id}}">
-                                                 <input type="hidden" name="" value="{{$filter-> product_image}}"
+                                                 <input type="hidden" name="cart_product_image" value="{{$filter-> product_image}}"
                                                  class="cart_product_image_{{$filter-> product_id}}">
                                                  @if ($filter->promotion_id != 0)
                                                     @php

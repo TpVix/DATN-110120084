@@ -23,13 +23,13 @@
                                 <div class="form-group row">
                                     <label for="text" class="col-12 col-form-label">Tên</label>
                                     <div class="col-12">
-                                        <input id="text" name="accessory_name" value="{{ $accessory_edit->accessory_name }}" class="form-control here slug-title" type="text">
+                                        <input id="text" name="accessory_name" value="{{ $accessory_edit->accessory_name }}" class="form-control here slug-title" type="text" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="text" class="col-12 col-form-label">Đường dẫn</label>
                                     <div class="col-12">
-                                        <input id="text" name="accessory_slug" value="{{ $accessory_edit->accessory_slug }}" class="form-control here slug-title" type="text">
+                                        <input id="text" name="accessory_slug" value="{{ $accessory_edit->accessory_slug }}" class="form-control here slug-title" type="text" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">

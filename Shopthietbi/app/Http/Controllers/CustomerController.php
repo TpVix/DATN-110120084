@@ -321,7 +321,6 @@ class CustomerController extends Controller
             ->join('tbl_product', 'tbl_product.product_id', '=', 'tbl_wishlist.product_id')
             ->where('tbl_wishlist.customer_id', Session::get('customer_id'))
             ->get();
-
         return view('pages.customer.wishlist')
             ->with('cart_detail', $cart_detail)
             ->with('category', $category)
